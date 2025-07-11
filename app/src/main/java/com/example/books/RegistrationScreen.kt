@@ -1,6 +1,5 @@
 package com.example.books
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,22 +11,16 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.books.data.details.RetrofitClient
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 @Composable
-fun RegistrationScreen(navController: NavController) {
-    var login by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+fun RegistrationScreen(navController: NavController, viewModel: RegistrationViewModel) {
+
+    val login by viewModel.login
+    val password by viewModel.password
 
     Column(
         modifier = Modifier
@@ -37,7 +30,7 @@ fun RegistrationScreen(navController: NavController) {
     ) {
         TextField(
             value = login,
-            onValueChange = { login = it },
+            onValueChange = { viewModel.onLoginChange(it) },
             label = { Text("Логин") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -46,7 +39,7 @@ fun RegistrationScreen(navController: NavController) {
 
         TextField(
             value = password,
-            onValueChange = { password = it },
+            onValueChange = { viewModel.onPasswordChange(it) },
             label = { Text("Пароль") },
             modifier = Modifier.fillMaxWidth()
         )

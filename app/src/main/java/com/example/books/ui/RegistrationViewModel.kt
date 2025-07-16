@@ -1,4 +1,4 @@
-package com.example.books
+package com.example.books.ui
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf

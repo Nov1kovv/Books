@@ -1,0 +1,30 @@
+package com.example.books.ui
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.books.data.details.RetrofitClient
+import com.example.books.data.repository.BookRepositoryImpl
+import com.example.books.domain.model.Book
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+
+class BookCatalogViewModel : ViewModel() {
+
+    private val repository = BookRepositoryImpl(RetrofitClient.api)
+
+    private val _books = MutableStateFlow<List<Book>>(emptyList())
+    val books: StateFlow<List<Book>> = _books
+
+    fun searchBooks(query: String) {
+        viewModelScope.launch {
+            try {
+                val result = repository.searchBooks(query)
+                _books.value = result
+            } catch (e: Exception) {
+                // Обработка ошибки
+                _books.value = emptyList()
+            }
+        }
+    }
+}

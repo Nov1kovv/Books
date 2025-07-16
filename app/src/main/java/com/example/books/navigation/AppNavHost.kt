@@ -5,9 +5,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.books.RegistrationScreen
-import com.example.books.BookCatalogScreen
-import com.example.books.RegistrationViewModel
+import com.example.books.ui.RegistrationScreen
+import com.example.books.ui.BookCatalogScreen
+import com.example.books.ui.BookCatalogViewModel
+import com.example.books.ui.RegistrationViewModel
 
 @Composable
 fun AppNavHost(navController: NavHostController) {
@@ -19,6 +20,9 @@ fun AppNavHost(navController: NavHostController) {
             val viewModel = viewModel<RegistrationViewModel>()
             RegistrationScreen(navController, viewModel)
         }
-        composable("catalog") { BookCatalogScreen() }
+        composable("catalog") {
+            val viewModel = viewModel<BookCatalogViewModel>()
+            BookCatalogScreen(viewModel = viewModel)
+        }
     }
 }

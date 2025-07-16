@@ -1,4 +1,8 @@
 package com.example.books.domain.model
 
-class Book {
-}
+data class Book(
+    val id: String,
+    val title: String,
+    val authors: List<String>?,
+    val description: String?
+)

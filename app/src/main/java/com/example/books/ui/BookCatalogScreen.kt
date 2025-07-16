@@ -1,4 +1,4 @@
-package com.example.books
+package com.example.books.ui
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,14 +21,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.books.data.details.RetrofitClient
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 @Composable
-fun BookCatalogScreen() {
+fun BookCatalogScreen(viewModel: BookCatalogViewModel) {
     var query by remember { mutableStateOf("") } // query хранит текст введённый в поле поиска
-    var isSearching by remember { mutableStateOf(false) }  // isSearching флаг указывающий нужно ли запустить поиск
-
+    val books by viewModel.books.collectAsState()
     Column(
         modifier = Modifier
             .fillMaxSize()// Заполняет весь экран
@@ -47,28 +45,18 @@ fun BookCatalogScreen() {
         Spacer(modifier = Modifier.height(8.dp))
 
         Button(
-            onClick = {
-                isSearching = true //флаг, чтобы запустить поиск
-            },
+            onClick = { viewModel.searchBooks(query) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Искать")
         }
 
-        //Если isSearching = true, запускаем эффект поиска
-        if (isSearching) {
-            // LaunchedEffect запускается при изменении query
-            LaunchedEffect(query) {
-                try {
-                    val response = RetrofitClient.api.searchBooks(query)
-                    Log.d("BookSearch", "Найдено книг ${response.totalItems}")
-                    response.items.forEach {
-                        Log.d("BookSearch", "Книга ${it.volumeInfo.title}")
-                    }
-                } catch (e: Exception) {
-                    Log.e("BookSearch", "Ошибка ${e.message}", e)
+        LaunchedEffect(books) {
+            if (books.isNotEmpty()) {
+                Log.d("BookSearch", "Найдено книг: ${books.size}")
+                books.forEach { book ->
+                    Log.d("BookSearch", "Книга: ${book.title}")
                 }
-                isSearching = false
             }
         }
     }

@@ -11,10 +11,9 @@ import kotlinx.coroutines.launch
 
 class BookCatalogViewModel : ViewModel() {
 
-    private val repository = BookRepositoryImpl(RetrofitClient.api)
-
-    private val _books = MutableStateFlow<List<Book>>(emptyList())
-    val books: StateFlow<List<Book>> = _books
+    private val repository = BookRepositoryImpl(RetrofitClient.api) //репозиторий для получения книг из API
+    private val _books = MutableStateFlow<List<Book>>(emptyList()) // Приватный поток для хранения списка книг (изменяется только внутри ViewModel)
+    val books: StateFlow<List<Book>> = _books // Публичный поток, за которым может следить UI (например, Compose)
 
     fun searchBooks(query: String) {
         viewModelScope.launch {

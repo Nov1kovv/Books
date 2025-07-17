@@ -14,7 +14,8 @@ class BookRepositoryImpl(
                 id = it.id,
                 title = it.volumeInfo.title,
                 authors = it.volumeInfo.authors,
-                description = it.volumeInfo.description
+                description = it.volumeInfo.description,
+                imageUrl = it.volumeInfo.imageLinks?.thumbnail
             )
         }
     }

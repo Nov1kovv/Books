@@ -26,4 +26,7 @@ class BookCatalogViewModel : ViewModel() {
             }
         }
     }
+    fun getBookById(bookId: String): Book? {
+        return _books.value.find { it.id == bookId }
+    }
 }

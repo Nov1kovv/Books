@@ -8,10 +8,12 @@ import androidx.navigation.compose.composable
 import com.example.books.ui.RegistrationScreen
 import com.example.books.ui.BookCatalogScreen
 import com.example.books.ui.BookCatalogViewModel
+import com.example.books.ui.BookDetailScreen
 import com.example.books.ui.RegistrationViewModel
 
 @Composable
 fun AppNavHost(navController: NavHostController) {
+    val catalogViewModel: BookCatalogViewModel = viewModel()
     // NavHost это контейнер, который отображает текущий экран в зависимости от навигационного состояния.
     // navController контроллер, который управляет переходами между экранами.
     // startDestination экран, который будет показан первым при запуске приложения.
@@ -21,8 +23,11 @@ fun AppNavHost(navController: NavHostController) {
             RegistrationScreen(navController, viewModel)
         }
         composable("catalog") {
-            val viewModel = viewModel<BookCatalogViewModel>()
-            BookCatalogScreen(viewModel = viewModel)
+            BookCatalogScreen(viewModel = catalogViewModel, navController = navController)
+        }
+        composable("detail/{bookId}") { backStackEntry ->
+            val bookId = backStackEntry.arguments?.getString("bookId") ?: ""
+            BookDetailScreen(bookId = bookId, viewModel = catalogViewModel)
         }
     }
 }

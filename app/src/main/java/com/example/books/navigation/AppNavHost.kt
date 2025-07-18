@@ -10,6 +10,7 @@ import com.example.books.ui.BookCatalogScreen
 import com.example.books.ui.BookCatalogViewModel
 import com.example.books.ui.BookDetailScreen
 import com.example.books.ui.RegistrationViewModel
+import com.example.books.ui.SearchScreen
 
 @Composable
 fun AppNavHost(navController: NavHostController) {
@@ -23,7 +24,10 @@ fun AppNavHost(navController: NavHostController) {
             RegistrationScreen(navController, viewModel)
         }
         composable("catalog") {
-            BookCatalogScreen(viewModel = catalogViewModel, navController = navController)
+            BookCatalogScreen(navController = navController)
+        }
+        composable("search") {
+            SearchScreen(viewModel = catalogViewModel, navController = navController)
         }
         composable("detail/{bookId}") { backStackEntry ->
             val bookId = backStackEntry.arguments?.getString("bookId") ?: ""

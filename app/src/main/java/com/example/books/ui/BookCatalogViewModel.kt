@@ -21,7 +21,6 @@ class BookCatalogViewModel : ViewModel() {
                 val result = repository.searchBooks(query)
                 _books.value = result
             } catch (e: Exception) {
-                // Обработка ошибки
                 _books.value = emptyList()
             }
         }

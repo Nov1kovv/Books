@@ -1,6 +1,5 @@
 package com.example.books.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -21,7 +20,6 @@ fun BookDetailScreen(bookId: String, viewModel: BookCatalogViewModel) {
     }
         Column(modifier = Modifier.padding(16.dp)) {
             Text(text = book.title)
-            Spacer(modifier = Modifier.height(8.dp))
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = book.description ?: "Описание недоступно")
             Spacer(modifier = Modifier.height(16.dp))

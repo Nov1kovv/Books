@@ -31,6 +31,7 @@ import coil.compose.AsyncImage
 fun BookCatalogScreen(viewModel: BookCatalogViewModel, navController: NavController) {
     var query by remember { mutableStateOf("") } // query хранит текст введённый в поле поиска
     val books by viewModel.books.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()// Заполняет весь экран
@@ -59,7 +60,9 @@ fun BookCatalogScreen(viewModel: BookCatalogViewModel, navController: NavControl
         Spacer(modifier = Modifier.height(16.dp))
 
         // Список книг с изображениями
-        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        LazyColumn(modifier = Modifier
+            .weight(1f)
+            .fillMaxWidth()) {
             items(books) { book ->
                 Column(modifier = Modifier.padding(vertical = 8.dp)) {
                     Text(text = book.title)
@@ -86,5 +89,6 @@ fun BookCatalogScreen(viewModel: BookCatalogViewModel, navController: NavControl
                 }
             }
         }
+        BottomNavigationBar()
     }
 }

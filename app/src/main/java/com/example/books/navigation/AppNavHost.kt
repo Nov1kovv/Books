@@ -11,10 +11,11 @@ import com.example.books.ui.BookCatalogViewModel
 import com.example.books.ui.BookDetailScreen
 import com.example.books.ui.RegistrationViewModel
 import com.example.books.ui.SearchScreen
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun AppNavHost(navController: NavHostController) {
-    val catalogViewModel: BookCatalogViewModel = viewModel()
+    val catalogViewModel: BookCatalogViewModel = getViewModel()
     // NavHost это контейнер, который отображает текущий экран в зависимости от навигационного состояния.
     // navController контроллер, который управляет переходами между экранами.
     // startDestination экран, который будет показан первым при запуске приложения.

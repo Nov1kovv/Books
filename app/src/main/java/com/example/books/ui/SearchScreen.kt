@@ -29,7 +29,7 @@ import coil.compose.AsyncImage
 
 @Composable
 fun SearchScreen(viewModel: BookCatalogViewModel, navController: NavController) {
-    var query by remember { mutableStateOf("") }
+    val query by viewModel.query
     val books by viewModel.books.collectAsState()
 
     Column(
@@ -39,9 +39,7 @@ fun SearchScreen(viewModel: BookCatalogViewModel, navController: NavController) 
     ) {
         TextField(
             value = query,// текущее значение текста в поле
-            onValueChange = {
-                query = it
-            },// вызывается при изменении текста, обновляет состояние query
+            onValueChange = { viewModel.onQueryChange(it)},// вызывается при изменении текста, обновляет состояние query
             placeholder = { Text("Введите название книги") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,

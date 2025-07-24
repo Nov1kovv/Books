@@ -18,19 +18,20 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.example.books.ui.state.BookCatalogAction
+import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun SearchScreen(viewModel: BookCatalogViewModel, navController: NavController) {
-    val query by viewModel.query
-    val books by viewModel.books.collectAsState()
+    val state by viewModel.collectAsState()
+    val context = LocalContext.current
+
 
     Column(
         modifier = Modifier
@@ -38,16 +39,16 @@ fun SearchScreen(viewModel: BookCatalogViewModel, navController: NavController) 
             .padding(16.dp)
     ) {
         TextField(
-            value = query,// текущее значение текста в поле
-            onValueChange = { viewModel.onQueryChange(it)},// вызывается при изменении текста, обновляет состояние query
+            value = state.query,// текущее значение текста в поле
+            onValueChange = { viewModel.dispatch(BookCatalogAction.Search(it))},// вызывается при изменении текста, обновляет состояние query
             placeholder = { Text("Введите название книги") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search), //ввод на кнопке заменяется на поискк
             keyboardActions = KeyboardActions( //это обработка действий с клавиатуры
                 onSearch = {
-                    if (query.isNotBlank()) {//если query не пустое то вызывается функции searchBooks
-                        viewModel.searchBooks(query)
+                    if (state.query.isNotBlank()) {//если query не пустое то вызывается функции searchBooks
+                        viewModel.dispatch(BookCatalogAction.Search(state.query))
                     }
                 }
             )
@@ -61,7 +62,7 @@ fun SearchScreen(viewModel: BookCatalogViewModel, navController: NavController) 
                 .weight(1f)
                 .fillMaxWidth()
         ) {
-            items(books) { book ->
+            items(state.books) { book ->
                 Column(modifier = Modifier.padding(vertical = 8.dp)) {
                     Text(text = book.title)
 

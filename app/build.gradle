@@ -84,4 +84,9 @@ dependencies {
     implementation "io.insert-koin:koin-android:3.4.2"
     implementation "io.insert-koin:koin-androidx-compose:3.4.2"
 
+    implementation(libs.orbit.core)
+    implementation(libs.orbit.viewmodel)
+    implementation(libs.orbit.compose)
+    testImplementation(libs.orbit.test)
+
 }

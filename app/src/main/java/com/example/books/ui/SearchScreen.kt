@@ -1,8 +1,10 @@
 package com.example.books.ui
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,14 +13,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -63,27 +67,31 @@ fun SearchScreen(viewModel: BookCatalogViewModel, navController: NavController) 
                 .fillMaxWidth()
         ) {
             items(state.books) { book ->
-                Column(modifier = Modifier.padding(vertical = 8.dp)) {
-                    Text(text = book.title)
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-                    val imageUrl = book.imageUrl
-                    Log.d("BookCatalogScreen", "imageUrl = $imageUrl")
-
-                    if (imageUrl != null) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
+                ) {
+                    if (book.imageUrl != null) {
                         AsyncImage(
-                            model = imageUrl,
+                            model = book.imageUrl,
                             contentDescription = book.title,
                             modifier = Modifier
-                                .width(100.dp)
-                                .height(100.dp)
+                                .width(120.dp)
+                                .height(120.dp)
+                                .clip(shape = RoundedCornerShape(4.dp))
                                 .clickable {
                                     navController.navigate("detail/${book.id}")
                                 }
                         )
-                    } else {
-                        Text("Нет изображения")
+                    }
+
+                    Spacer(modifier = Modifier.width(12.dp))
+
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(text = book.title)
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(text = book.description ?: "Описание недоступно", maxLines = 3)
                     }
                 }
             }

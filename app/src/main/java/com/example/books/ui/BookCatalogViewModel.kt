@@ -30,7 +30,7 @@ class BookCatalogViewModel( private val repository: BookRepository) : ViewModel(
         }
     }
 
-    fun dispatch(action: BookCatalogAction) {
+    fun dispatch(action: BookCatalogAction) { //функция обрабатывающая пользовательские события
         when (action) {
             is BookCatalogAction.Search -> searchBooks(action.query)
             is BookCatalogAction.SelectBook -> handleSelectBook(action.book)
@@ -38,16 +38,16 @@ class BookCatalogViewModel( private val repository: BookRepository) : ViewModel(
         }
 
     private fun searchBooks(query: String) = intent {
-        viewModelScope.launch(ceh) {
+        viewModelScope.launch(ceh) { //запускается корутина с обработкой от ошибок (ceh)
             reduce { state.copy(isLoading = true, error = null, query = query) }
             val result = repository.searchBooks(query)
             reduce { state.copy(books = result, isLoading = false) }
         }
     }
 
-    private fun handleSelectBook(book: Book) = intent {
-        viewModelScope.launch(ceh) {
-            reduce { state.copy(selectedBook = book) }
+    private fun handleSelectBook(book: Book) = intent { //сохраняет выбранную книгу в состояние и навигирует к Detail экрану
+        viewModelScope.launch(ceh) { //запускается корутина с обработкой от ошибок (ceh)
+            reduce { state.copy(selectedBook = book) } //состояние обновляется, выбранная книга сохраняется в state.selectedBook
             postSideEffect(BookCatalogSideEffect.NavigateToDetail(book.id))
         }
     }

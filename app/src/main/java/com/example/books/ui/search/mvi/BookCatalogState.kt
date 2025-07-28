@@ -1,4 +1,4 @@
-package com.example.books.ui.state
+package com.example.books.ui.search.mvi
 
 import com.example.books.domain.model.Book
 

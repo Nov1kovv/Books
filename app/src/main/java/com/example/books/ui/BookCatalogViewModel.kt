@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.books.domain.model.Book
 import com.example.books.domain.repository.BookRepository
-import com.example.books.ui.state.BookCatalogAction
-import com.example.books.ui.state.BookCatalogSideEffect
-import com.example.books.ui.state.BookCatalogState
+import com.example.books.ui.search.mvi.BookCatalogAction
+import com.example.books.ui.search.mvi.BookCatalogSideEffect
+import com.example.books.ui.search.mvi.BookCatalogState
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost

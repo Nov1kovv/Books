@@ -1,4 +1,4 @@
-package com.example.books.ui
+package com.example.books.ui.search
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,7 +33,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.example.books.ui.state.BookCatalogAction
+import com.example.books.ui.BookCatalogViewModel
+import com.example.books.ui.search.mvi.BookCatalogAction
 import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable

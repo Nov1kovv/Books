@@ -8,9 +8,9 @@ import androidx.navigation.compose.composable
 import com.example.books.ui.RegistrationScreen
 import com.example.books.ui.BookCatalogScreen
 import com.example.books.ui.BookCatalogViewModel
-import com.example.books.ui.BookDetailScreen
+import com.example.books.ui.details.BookDetailScreen
 import com.example.books.ui.RegistrationViewModel
-import com.example.books.ui.SearchScreen
+import com.example.books.ui.search.SearchScreen
 import org.koin.androidx.compose.getViewModel
 
 @Composable

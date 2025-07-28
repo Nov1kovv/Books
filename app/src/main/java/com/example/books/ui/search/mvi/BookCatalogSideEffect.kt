@@ -1,4 +1,4 @@
-package com.example.books.ui.state
+package com.example.books.ui.search.mvi
 
 sealed class BookCatalogSideEffect {
     data class ShowError(val message: String) : BookCatalogSideEffect()

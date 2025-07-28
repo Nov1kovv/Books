@@ -9,8 +9,8 @@ import com.example.books.navigation.AppNavHost
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
             AppNavHost(navController = navController)

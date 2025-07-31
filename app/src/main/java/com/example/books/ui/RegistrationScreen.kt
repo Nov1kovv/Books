@@ -76,21 +76,22 @@ fun RegistrationScreen(navController: NavController, viewModel: RegistrationView
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = it, color = Color.Red)
         }
-    }
-    Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
-    Row( //горизонтальный контейнер
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center //выравнивание по центру
-    ) {
-        Text(text = "New user?")
-        Spacer(modifier = Modifier.width(4.dp))
-        Text(
-            text = "Sign up",
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.clickable {
-                navController.navigate("register")
-            }
-        )
+        Row( //горизонтальный контейнер
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center //выравнивание по центру
+        ) {
+            Text(text = "Новый пользователь?")
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = "Зарегистрироваться",
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.clickable {
+                    navController.navigate("signup")
+                }
+            )
+        }
     }
 }
+

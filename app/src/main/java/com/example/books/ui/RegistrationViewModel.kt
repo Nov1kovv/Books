@@ -15,59 +15,65 @@ import kotlinx.coroutines.launch
 
 class RegistrationViewModel : ViewModel() {
 
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()//экземпляр FirebaseAuth — это объект, который управляет аутентификацией пользователей в Firebase
+
+    // LiveData для отслеживания состояния загрузки
     private val _loading = MutableLiveData(false)
     val loading: LiveData<Boolean> = _loading
 
+    // LiveData для хранения логина
     private val _login = MutableLiveData("")
     val login: LiveData<String> = _login
 
+    // LiveData для хранения пароля
     private val _password = MutableLiveData("")
     val password: LiveData<String> = _password
 
     private val _errorMessage = MutableLiveData<String?>(null)
     val errorMessage: LiveData<String?> = _errorMessage
 
+    // Обновление логина при вводе пользователя
     fun onLoginChange(newLogin: String) {
         _login.value = newLogin
     }
-
+    // Обновляение пароля при вводе пользователя
     fun onPasswordChange(newPassword: String) {
         _password.value = newPassword
     }
 
+    // Функция для входа пользователя с email и паролем
     fun signInWithEmailAndPassword(email: String, password: String, home: () -> Unit) =
         viewModelScope.launch {
             try {
+                // Вызов Firebase метода входа
                 auth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            Log.d("FB", "signInWithEmailAndPassword: SUCCESS")
+                            // Если вход успешен вызываем функцию home для перехода в каталог
                             home()
                         } else {
-                            Log.d("FB", "signInWithEmailAndPassword: FAILED ${task.exception?.message}")
                             _errorMessage.value = task.exception?.message ?: "Ошибка входа"
                         }
                     }
             } catch (ex: Exception) {
-                Log.d("FB", "signIn Exception: ${ex.message}")
                 _errorMessage.value = ex.message ?: "Ошибка входа"
             }
         }
 
+    // Функция для создания нового пользователя с email и паролем
     fun createUserWithEmailAndPassword(email: String, password: String, home: () -> Unit) {
-        if (_loading.value == true) return
-        _loading.value = true
+        //если пользователь нажал на кнопку зарегистрироваться, отправляется запрос на сервер
+        //нужно заблокировать повторные запросы если пользователь несколько раз нажмет на кнопку
+        if (_loading.value == true) return // Если уже идёт загрузка, ничего не делаем
+        _loading.value = true // Устанавливаем загрузку в true, чтобы UI показывал "загрузка"
         _errorMessage.value = null
 
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 _loading.value = false
                 if (task.isSuccessful) {
-                    Log.d("FB", "createUserWithEmailAndPassword: SUCCESS")
                     home()
                 } else {
-                    Log.d("FB", "createUser FAILED: ${task.exception?.message}")
                     _errorMessage.value = task.exception?.message ?: "Ошибка регистрации"
                 }
             }

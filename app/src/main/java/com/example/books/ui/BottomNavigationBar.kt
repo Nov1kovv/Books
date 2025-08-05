@@ -10,9 +10,10 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavController
 
 @Composable
-fun BottomNavigationBar() {
+fun BottomNavigationBar(navController: NavController) {
     NavigationBar {
         NavigationBarItem(
             selected = true,
@@ -22,7 +23,7 @@ fun BottomNavigationBar() {
         )
         NavigationBarItem(
             selected = false,
-            onClick = {},
+            onClick = { navController.navigate("profile") },
             icon = { Icon(Icons.Default.Person, contentDescription = "Библиотека") },
             label = { Text("Профиль") }
         )

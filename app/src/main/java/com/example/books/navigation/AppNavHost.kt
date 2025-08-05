@@ -10,6 +10,7 @@ import com.example.books.SignUpScreen
 import com.example.books.ui.RegistrationScreen
 import com.example.books.ui.BookCatalogScreen
 import com.example.books.ui.BookCatalogViewModel
+import com.example.books.ui.ProfileScreen
 import com.example.books.ui.details.BookDetailScreen
 import com.example.books.ui.RegistrationViewModel
 import com.example.books.ui.search.SearchScreen
@@ -35,6 +36,9 @@ fun AppNavHost(navController: NavHostController) {
         }
         composable("catalog") {
             BookCatalogScreen(navController = navController)
+        }
+        composable("profile") {
+            ProfileScreen(navController = navController)
         }
         composable("search") {
             SearchScreen(viewModel = catalogViewModel, navController = navController)

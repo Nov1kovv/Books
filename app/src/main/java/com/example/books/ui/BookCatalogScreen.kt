@@ -39,7 +39,7 @@ fun BookCatalogScreen(navController: NavController?) {
             placeholder = { Text("Нажмите, чтобы искать книги") }
         )
         Spacer(modifier = Modifier.weight(1f))
-        BottomNavigationBar()
+        BottomNavigationBar(navController = navController!!)
     }
 }
 

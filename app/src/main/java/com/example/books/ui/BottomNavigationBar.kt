@@ -24,7 +24,7 @@ fun BottomNavigationBar() {
             selected = false,
             onClick = {},
             icon = { Icon(Icons.Default.Person, contentDescription = "Библиотека") },
-            label = { Text("Библиотека") }
+            label = { Text("Профиль") }
         )
         NavigationBarItem(
             selected = false,

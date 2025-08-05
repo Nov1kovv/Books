@@ -5,6 +5,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.books.ExaminationScreen
 import com.example.books.SignUpScreen
 import com.example.books.ui.RegistrationScreen
 import com.example.books.ui.BookCatalogScreen
@@ -20,7 +21,10 @@ fun AppNavHost(navController: NavHostController) {
     // NavHost это контейнер, который отображает текущий экран в зависимости от навигационного состояния.
     // navController контроллер, который управляет переходами между экранами.
     // startDestination экран, который будет показан первым при запуске приложения.
-    NavHost(navController = navController, startDestination = "login") {
+    NavHost(navController = navController, startDestination = "examination") {
+        composable("examination") {
+            ExaminationScreen(navController)
+        }
         composable("login") {
             val viewModel = viewModel<RegistrationViewModel>()
             RegistrationScreen(navController, viewModel)

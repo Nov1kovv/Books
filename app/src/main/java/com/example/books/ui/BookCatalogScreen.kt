@@ -7,19 +7,23 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
-fun BookCatalogScreen(navController: NavController) {
+fun BookCatalogScreen(navController: NavController?) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
+            //.systemBarsPadding() это будет на деталке
+            //здесь сделать scaffold
     ) {
         Text("Каталог книг", modifier = Modifier.fillMaxWidth())
 
@@ -31,10 +35,16 @@ fun BookCatalogScreen(navController: NavController) {
             enabled = false,
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { navController.navigate("search") },
+                .clickable { navController?.navigate("search") },
             placeholder = { Text("Нажмите, чтобы искать книги") }
         )
         Spacer(modifier = Modifier.weight(1f))
         BottomNavigationBar()
     }
+}
+
+@Preview
+@Composable
+fun PreviewBookCatalogScreen(){
+    BookCatalogScreen(null)
 }

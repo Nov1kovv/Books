@@ -25,7 +25,6 @@ fun ProfileScreen(navController: NavController) {
         Button(onClick = {
             FirebaseAuth.getInstance().signOut() // Выход из аккаунта
             navController.navigate("login") {
-                popUpTo("catalog") { inclusive = true } // Очищаем backstack
             }
         }) {
             Text("Выйти из аккаунта")

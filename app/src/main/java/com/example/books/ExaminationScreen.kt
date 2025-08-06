@@ -16,11 +16,9 @@ fun ExaminationScreen(navController: NavController) {
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) { // Если пользователь уже вошёл навигация в каталог книг
             navController.navigate("catalog") {
-                popUpTo("examination") { inclusive = true } //чтобы пользователь не зашел назад, надо удалить из стека экран
             }
-        } else {  // Если пользователь не вошёл отправляем на экран логина
+        } else {
             navController.navigate("login") {
-                popUpTo("examination") { inclusive = true } //тоже самое как и с каталогом
             }
         }
     }

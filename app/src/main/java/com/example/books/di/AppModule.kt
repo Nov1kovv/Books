@@ -3,7 +3,8 @@ package com.example.books.di
 import com.example.books.data.api.GoogleBooksApi
 import com.example.books.data.repository.BookRepositoryImpl
 import com.example.books.domain.repository.BookRepository
-import com.example.books.ui.BookCatalogViewModel
+import com.example.books.ui.bottombar.ProfileViewModel
+import com.example.books.ui.catalog.BookCatalogViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -28,5 +29,8 @@ val appModule = module {
 
     viewModel {
         BookCatalogViewModel(repository = get())
+    }
+    viewModel {
+        ProfileViewModel()
     }
 }

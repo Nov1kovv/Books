@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -17,7 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.books.ui.BookCatalogViewModel
+import com.example.books.ui.catalog.BookCatalogViewModel
 
 @Composable
 fun BookDetailScreen(bookId: String, viewModel: BookCatalogViewModel) {
@@ -28,6 +29,7 @@ fun BookDetailScreen(bookId: String, viewModel: BookCatalogViewModel) {
     }
         Column(modifier = Modifier
             .fillMaxSize()
+            .systemBarsPadding()
             .padding(16.dp)
         ) {
             Row(modifier = Modifier.fillMaxWidth()) {

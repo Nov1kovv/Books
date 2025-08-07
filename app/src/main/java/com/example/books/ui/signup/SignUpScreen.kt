@@ -1,4 +1,4 @@
-package com.example.books
+package com.example.books.ui.signup
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -12,7 +12,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.books.ui.RegistrationViewModel
+import com.example.books.ui.registration.RegistrationViewModel
 
 @Composable
 fun SignUpScreen(navController: NavController, viewModel: RegistrationViewModel) {
@@ -25,6 +25,7 @@ fun SignUpScreen(navController: NavController, viewModel: RegistrationViewModel)
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .systemBarsPadding()
             .padding(16.dp),
         verticalArrangement = Arrangement.Center
     ) {

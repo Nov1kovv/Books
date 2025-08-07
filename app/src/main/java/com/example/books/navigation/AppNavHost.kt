@@ -6,13 +6,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.books.ExaminationScreen
-import com.example.books.SignUpScreen
-import com.example.books.ui.RegistrationScreen
-import com.example.books.ui.BookCatalogScreen
-import com.example.books.ui.BookCatalogViewModel
-import com.example.books.ui.ProfileScreen
+import com.example.books.ui.signup.SignUpScreen
+import com.example.books.ui.registration.RegistrationScreen
+import com.example.books.ui.catalog.BookCatalogScreen
+import com.example.books.ui.catalog.BookCatalogViewModel
+import com.example.books.ui.bottombar.ProfileScreen
 import com.example.books.ui.details.BookDetailScreen
-import com.example.books.ui.RegistrationViewModel
+import com.example.books.ui.registration.RegistrationViewModel
 import com.example.books.ui.search.SearchScreen
 import org.koin.androidx.compose.getViewModel
 

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,6 +24,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,7 +35,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.example.books.ui.BookCatalogViewModel
+import com.example.books.ui.catalog.BookCatalogViewModel
 import com.example.books.ui.search.mvi.BookCatalogAction
 import org.orbitmvi.orbit.compose.collectAsState
 
@@ -51,6 +53,7 @@ fun SearchScreen(viewModel: BookCatalogViewModel, navController: NavController) 
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .systemBarsPadding()
                 .background(Color(0xFFF1F3F4))
                 .padding(16.dp)
         ) {

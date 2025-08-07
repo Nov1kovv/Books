@@ -26,7 +26,6 @@ fun ExaminationScreen(navController: NavController) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
+    ){
     }
 }

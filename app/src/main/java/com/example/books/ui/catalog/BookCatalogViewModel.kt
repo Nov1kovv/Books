@@ -1,4 +1,4 @@
-package com.example.books.ui
+package com.example.books.ui.catalog
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -1,4 +1,4 @@
-package com.example.books.ui
+package com.example.books.ui.bottombar
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite

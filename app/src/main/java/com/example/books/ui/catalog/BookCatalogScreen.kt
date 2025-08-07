@@ -1,4 +1,4 @@
-package com.example.books.ui
+package com.example.books.ui.catalog
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -15,12 +15,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.books.ui.bottombar.BottomNavigationBar
 
 @Composable
 fun BookCatalogScreen(navController: NavController?) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .systemBarsPadding()
             .padding(16.dp)
             //.systemBarsPadding() это будет на деталке
             //здесь сделать scaffold

@@ -1,4 +1,4 @@
-package com.example.books.ui
+package com.example.books.ui.registration
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

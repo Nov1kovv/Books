@@ -11,6 +11,7 @@ import com.example.books.ui.registration.RegistrationScreen
 import com.example.books.ui.catalog.BookCatalogScreen
 import com.example.books.ui.catalog.BookCatalogViewModel
 import com.example.books.ui.bottombar.ProfileScreen
+import com.example.books.ui.bottombar.ProfileViewModel
 import com.example.books.ui.details.BookDetailScreen
 import com.example.books.ui.registration.RegistrationViewModel
 import com.example.books.ui.search.SearchScreen
@@ -38,7 +39,8 @@ fun AppNavHost(navController: NavHostController) {
             BookCatalogScreen(navController = navController)
         }
         composable("profile") {
-            ProfileScreen(navController = navController)
+            val viewModel = getViewModel<ProfileViewModel>()
+            ProfileScreen(navController = navController, viewModel = viewModel)
         }
         composable("search") {
             SearchScreen(viewModel = catalogViewModel, navController = navController)

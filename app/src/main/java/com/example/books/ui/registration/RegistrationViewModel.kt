@@ -1,76 +1,89 @@
 package com.example.books.ui.registration
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.books.ui.registration.mvi.RegistrationAction
+import com.example.books.ui.registration.mvi.RegistrationSideEffect
+import com.example.books.ui.registration.mvi.RegistrationState
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.viewmodel.container
 
-class RegistrationViewModel : ViewModel() {
+class RegistrationViewModel : ViewModel(),
+    ContainerHost<RegistrationState, RegistrationSideEffect> {
+
+        override val container = container<RegistrationState, RegistrationSideEffect>(
+        RegistrationState()
+    )
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()//экземпляр FirebaseAuth — это объект, который управляет аутентификацией пользователей в Firebase
 
-    // LiveData для отслеживания состояния загрузки
-    private val _loading = MutableLiveData(false)
-    val loading: LiveData<Boolean> = _loading
-
-    // LiveData для хранения логина
-    private val _login = MutableLiveData("")
-    val login: LiveData<String> = _login
-
-    // LiveData для хранения пароля
-    private val _password = MutableLiveData("")
-    val password: LiveData<String> = _password
-
-    private val _errorMessage = MutableLiveData<String?>(null)
-    val errorMessage: LiveData<String?> = _errorMessage
-
-    // Обновление логина при вводе пользователя
-    fun onLoginChange(newLogin: String) {
-        _login.value = newLogin
-    }
-    // Обновляение пароля при вводе пользователя
-    fun onPasswordChange(newPassword: String) {
-        _password.value = newPassword
+    private val ceh = CoroutineExceptionHandler { _, throwable ->
+        intent {
+            reduce { state.copy(isLoading = false, errorMessage = throwable.message) }
+            postSideEffect(RegistrationSideEffect.ShowError(throwable.message ?: "Ошибка"))
+        }
     }
 
-    // Функция для входа пользователя с email и паролем
-    fun signInWithEmailAndPassword(email: String, password: String, home: () -> Unit) =
-        viewModelScope.launch {
-            try {
-                // Вызов Firebase метода входа
-                auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
+    fun dispatch(action: RegistrationAction) {
+        when (action) {
+            is RegistrationAction.UpdateLogin -> updateLogin(action.login)
+            is RegistrationAction.UpdatePassword -> updatePassword(action.password)
+            is RegistrationAction.SubmitLogin -> login()
+            is RegistrationAction.SubmitRegister -> register()
+        }
+    }
+
+    private fun updateLogin(login: String) = intent {
+        reduce { state.copy(login = login) }
+    }
+
+    private fun updatePassword(password: String) = intent {
+        reduce { state.copy(password = password) }
+    }
+
+    private fun login() = intent {
+        if (state.isLoading) return@intent
+        reduce { state.copy(isLoading = true, errorMessage = null) }
+
+        viewModelScope.launch(ceh) {
+            auth.signInWithEmailAndPassword(state.login, state.password)
+                .addOnCompleteListener { task ->
+                    intent {
+                        reduce { state.copy(isLoading = false) }
                         if (task.isSuccessful) {
-                            // Если вход успешен вызываем функцию home для перехода в каталог
-                            home()
+                            postSideEffect(RegistrationSideEffect.NavigateToCatalog)
                         } else {
-                            _errorMessage.value = task.exception?.message ?: "Ошибка входа"
+                            val message = task.exception?.message ?: "Ошибка входа"
+                            reduce { state.copy(errorMessage = message) }
+                            postSideEffect(RegistrationSideEffect.ShowError(message))
                         }
                     }
-            } catch (ex: Exception) {
-                _errorMessage.value = ex.message ?: "Ошибка входа"
-            }
-        }
-
-    // Функция для создания нового пользователя с email и паролем
-    fun createUserWithEmailAndPassword(email: String, password: String, home: () -> Unit) {
-        //если пользователь нажал на кнопку зарегистрироваться, отправляется запрос на сервер
-        //нужно заблокировать повторные запросы если пользователь несколько раз нажмет на кнопку
-        if (_loading.value == true) return // Если уже идёт загрузка, ничего не делаем
-        _loading.value = true // Устанавливаем загрузку в true, чтобы UI показывал "загрузка"
-        _errorMessage.value = null
-
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                _loading.value = false
-                if (task.isSuccessful) {
-                    home()
-                } else {
-                    _errorMessage.value = task.exception?.message ?: "Ошибка регистрации"
                 }
-            }
+        }
+    }
+
+    private fun register() = intent {
+        if (state.isLoading) return@intent
+        reduce { state.copy(isLoading = true, errorMessage = null) }
+
+        viewModelScope.launch(ceh) {
+            auth.createUserWithEmailAndPassword(state.login, state.password)
+                .addOnCompleteListener { task ->
+                    intent {
+                        reduce { state.copy(isLoading = false) }
+                        if (task.isSuccessful) {
+                            postSideEffect(RegistrationSideEffect.NavigateToCatalog)
+                        } else {
+                            val message = task.exception?.message ?: "Ошибка регистрации"
+                            reduce { state.copy(errorMessage = message) }
+                            postSideEffect(RegistrationSideEffect.ShowError(message))
+                        }
+                    }
+                }
+        }
     }
 }
 

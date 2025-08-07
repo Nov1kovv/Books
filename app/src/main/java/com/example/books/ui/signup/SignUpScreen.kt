@@ -13,14 +13,28 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.books.ui.registration.RegistrationViewModel
+import com.example.books.ui.registration.mvi.RegistrationAction
+import com.example.books.ui.registration.mvi.RegistrationSideEffect
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun SignUpScreen(navController: NavController, viewModel: RegistrationViewModel) {
 
-    val login by viewModel.login.observeAsState("")
-    val password by viewModel.password.observeAsState("")
-    val isLoading by viewModel.loading.observeAsState(false)
-    val errorMessage by viewModel.errorMessage.observeAsState()
+    val state by viewModel.collectAsState()
+
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            is RegistrationSideEffect.NavigateToCatalog -> {
+                navController.navigate("catalog") {
+                    popUpTo("signup") { inclusive = true }
+                }
+            }
+            is RegistrationSideEffect.ShowError -> {
+
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -31,8 +45,8 @@ fun SignUpScreen(navController: NavController, viewModel: RegistrationViewModel)
     ) {
 
         TextField(
-            value = login,
-            onValueChange = { viewModel.onLoginChange(it) },
+            value = state.login,
+            onValueChange = { viewModel.dispatch(RegistrationAction.UpdateLogin(it)) },
             label = { Text("Логин") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -40,8 +54,8 @@ fun SignUpScreen(navController: NavController, viewModel: RegistrationViewModel)
         Spacer(modifier = Modifier.height(8.dp))
 
         TextField(
-            value = password,
-            onValueChange = { viewModel.onPasswordChange(it) },
+            value = state.password,
+            onValueChange = { viewModel.dispatch(RegistrationAction.UpdatePassword(it)) },
             label = { Text("Пароль") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -50,17 +64,15 @@ fun SignUpScreen(navController: NavController, viewModel: RegistrationViewModel)
 
         Button(
             onClick = {
-                viewModel.createUserWithEmailAndPassword(login, password) {
-                    navController.navigate("catalog")
-                }
+                viewModel.dispatch(RegistrationAction.SubmitRegister)
             },
             modifier = Modifier.fillMaxWidth(),
-            enabled = !isLoading
+            enabled = !state.isLoading
         ) {
-            Text(if (isLoading) "Загрузка..." else "Зарегистрироваться")
+            Text(if (state.isLoading) "Загрузка..." else "Зарегистрироваться")
         }
 
-        errorMessage?.let {
+        state.errorMessage?.let {
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = it, color = Color.Red)
         }

@@ -5,6 +5,7 @@ import com.example.books.data.repository.BookRepositoryImpl
 import com.example.books.domain.repository.BookRepository
 import com.example.books.ui.bottombar.ProfileViewModel
 import com.example.books.ui.catalog.BookCatalogViewModel
+import com.example.books.ui.registration.RegistrationViewModel
 import com.example.books.ui.search.SearchViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -36,5 +37,8 @@ val appModule = module {
     }
     viewModel {
         ProfileViewModel()
+    }
+    viewModel {
+        RegistrationViewModel()
     }
 }

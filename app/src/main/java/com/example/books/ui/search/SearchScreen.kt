@@ -30,19 +30,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.example.books.ui.catalog.BookCatalogViewModel
 import com.example.books.ui.search.mvi.BookCatalogAction
 import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
-fun SearchScreen(viewModel: BookCatalogViewModel, navController: NavController) {
+fun SearchScreen(viewModel: SearchViewModel, navController: NavController) {
     val state by viewModel.collectAsState()
-    val context = LocalContext.current
 
     Box(
         modifier = Modifier

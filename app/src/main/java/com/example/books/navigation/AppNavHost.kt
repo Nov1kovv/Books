@@ -15,11 +15,13 @@ import com.example.books.ui.bottombar.ProfileViewModel
 import com.example.books.ui.details.BookDetailScreen
 import com.example.books.ui.registration.RegistrationViewModel
 import com.example.books.ui.search.SearchScreen
+import com.example.books.ui.search.SearchViewModel
 import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun AppNavHost(navController: NavHostController) {
     val catalogViewModel: BookCatalogViewModel = getViewModel()
+    val searchViewModel: SearchViewModel = getViewModel()
     // NavHost это контейнер, который отображает текущий экран в зависимости от навигационного состояния.
     // navController контроллер, который управляет переходами между экранами.
     // startDestination экран, который будет показан первым при запуске приложения.
@@ -32,7 +34,7 @@ fun AppNavHost(navController: NavHostController) {
             RegistrationScreen(navController, viewModel)
         }
         composable("signup") {
-            val viewModel = viewModel<RegistrationViewModel>()
+            val viewModel = getViewModel<RegistrationViewModel>()
             SignUpScreen(navController, viewModel)
         }
         composable("catalog") {
@@ -43,11 +45,11 @@ fun AppNavHost(navController: NavHostController) {
             ProfileScreen(navController = navController, viewModel = viewModel)
         }
         composable("search") {
-            SearchScreen(viewModel = catalogViewModel, navController = navController)
+            SearchScreen(viewModel = searchViewModel, navController = navController)
         }
         composable("detail/{bookId}") { backStackEntry ->
             val bookId = backStackEntry.arguments?.getString("bookId") ?: ""
-            BookDetailScreen(bookId = bookId, viewModel = catalogViewModel)
+            BookDetailScreen(bookId = bookId, viewModel = searchViewModel)
         }
     }
 }

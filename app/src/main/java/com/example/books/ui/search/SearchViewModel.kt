@@ -27,6 +27,10 @@ class SearchViewModel(
         }
     }
 
+    init {
+        searchBooks("nasa")
+    }
+
     fun dispatch(action: BookCatalogAction) {
         when (action) {
             is BookCatalogAction.Search -> searchBooks(action.query)
@@ -35,10 +39,13 @@ class SearchViewModel(
     }
 
     private fun searchBooks(query: String) = intent {
-        viewModelScope.launch(ceh) {
+        try {
             reduce { state.copy(isLoading = true, error = null, query = query) }
             val result = repository.searchBooks(query)
             reduce { state.copy(books = result, isLoading = false) }
+        } catch (e: Exception) {
+            reduce { state.copy(isLoading = false, error = e.message) }
+            postSideEffect(BookCatalogSideEffect.ShowError(e.message ?: "Ошибка"))
         }
     }
 

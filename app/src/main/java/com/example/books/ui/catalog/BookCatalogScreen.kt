@@ -36,10 +36,16 @@ import org.orbitmvi.orbit.compose.collectAsState
 fun BookCatalogScreen(navController: NavController, viewModel: BookCatalogViewModel) {
     val state by viewModel.collectAsState()
 
+    Scaffold(
+        bottomBar = {
+            BottomNavigationBar(navController)
+        }
+    ) { innerPadding ->
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .systemBarsPadding()
+                .padding(innerPadding) // отступ от bottomBar
                 .padding(16.dp)
             //.systemBarsPadding() это будет на деталке
             //здесь сделать scaffold
@@ -92,6 +98,6 @@ fun BookCatalogScreen(navController: NavController, viewModel: BookCatalogViewMo
                     }
                 }
             }
-            BottomNavigationBar(navController)
         }
     }
+}

@@ -38,7 +38,8 @@ fun AppNavHost(navController: NavHostController) {
             SignUpScreen(navController, viewModel)
         }
         composable("catalog") {
-            BookCatalogScreen(navController = navController)
+            val viewModel = getViewModel<BookCatalogViewModel>()
+            BookCatalogScreen(navController = navController, viewModel = viewModel)
         }
         composable("profile") {
             val viewModel = getViewModel<ProfileViewModel>()

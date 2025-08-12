@@ -22,7 +22,7 @@ class RegistrationViewModel : ViewModel(),
 
     private val ceh = CoroutineExceptionHandler { _, throwable ->
         intent {
-            reduce { state.copy(isLoading = false, errorMessage = throwable.message) }
+            reduce { state.copy(isLoading = false, errorMessage = throwable.message) }//Меняет состояние state то, что нужно отобразить на экране
             postSideEffect(RegistrationSideEffect.ShowError(throwable.message ?: "Ошибка"))
         }
     }
@@ -52,12 +52,12 @@ class RegistrationViewModel : ViewModel(),
             auth.signInWithEmailAndPassword(state.login, state.password)
                 .addOnCompleteListener { task ->
                     intent {
-                        reduce { state.copy(isLoading = false) }
+                        reduce { state.copy(isLoading = false) }//Меняет состояние state то, что нужно отобразить на экране
                         if (task.isSuccessful) {
                             postSideEffect(RegistrationSideEffect.NavigateToCatalog)
                         } else {
                             val message = task.exception?.message ?: "Ошибка входа"
-                            reduce { state.copy(errorMessage = message) }
+                            reduce { state.copy(errorMessage = message) } //Меняет состояние state то, что нужно отобразить на экране
                             postSideEffect(RegistrationSideEffect.ShowError(message))
                         }
                     }

@@ -27,9 +27,9 @@ class SearchViewModel(
         }
     }
 
-    init {
-        searchBooks("nasa")
-    }
+//    init {
+//        searchBooks("nasa")
+//    }
 
     fun dispatch(action: BookCatalogAction) {
         when (action) {

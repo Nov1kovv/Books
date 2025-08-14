@@ -19,14 +19,18 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.books.ui.bottombar.BottomNavigationBar
@@ -36,7 +40,13 @@ import org.orbitmvi.orbit.compose.collectAsState
 fun BookCatalogScreen(navController: NavController, viewModel: BookCatalogViewModel) {
     val state by viewModel.collectAsState()
 
+    val backgroundColor = Color(0xFF121212)
+    val cardColor = Color(0xFF1E1E1E)
+    val textPrimary = Color.White
+    val textSecondary = Color(0xFFB0B0B0)
+
     Scaffold(
+        containerColor = backgroundColor,
         bottomBar = {
             BottomNavigationBar(navController)
         }
@@ -47,10 +57,11 @@ fun BookCatalogScreen(navController: NavController, viewModel: BookCatalogViewMo
                 .fillMaxSize()
                 .padding(innerPadding) // отступ от bottomBar
                 .padding(16.dp)
-            //.systemBarsPadding() это будет на деталке
-            //здесь сделать scaffold
+                .background(backgroundColor)
         ) {
-            Text("Каталог книг", modifier = Modifier.fillMaxWidth())
+            Text("Каталог книг", color = textPrimary,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold, modifier = Modifier.fillMaxWidth())
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -58,8 +69,16 @@ fun BookCatalogScreen(navController: NavController, viewModel: BookCatalogViewMo
                 value = "",
                 onValueChange = {},
                 enabled = false,
+                colors = TextFieldDefaults.colors(
+                    disabledContainerColor = cardColor,
+                    disabledTextColor = textPrimary,
+                    disabledPlaceholderColor = textSecondary,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
+                    .clip(RoundedCornerShape(12.dp))
                     .clickable { navController?.navigate("search") },
                 placeholder = { Text("Нажмите, чтобы искать книги") }
             )
@@ -71,8 +90,10 @@ fun BookCatalogScreen(navController: NavController, viewModel: BookCatalogViewMo
             ) {
                 items(state.books) { book ->
                     Row(
+                        verticalAlignment = Alignment.Top,
                         modifier = Modifier
                             .fillMaxWidth()
+                            .clip(RoundedCornerShape(12.dp))
                             .padding(10.dp)
                     ) {
                         if (book.imageUrl != null) {
@@ -81,8 +102,8 @@ fun BookCatalogScreen(navController: NavController, viewModel: BookCatalogViewMo
                                 contentDescription = book.title,
                                 contentScale = ContentScale.Crop, //обрезание под размер
                                 modifier = Modifier
-                                    .size(140.dp)
-                                    .clip(RoundedCornerShape(12.dp)) //скругление картинки
+                                    .size(120.dp)
+                                    .clip(RoundedCornerShape(8.dp)) //скругление картинки
                                     .clickable {
                                         navController.navigate("detail/${book.id}")
                                     }
@@ -90,9 +111,11 @@ fun BookCatalogScreen(navController: NavController, viewModel: BookCatalogViewMo
                         }
                         Spacer(modifier = Modifier.width(12.dp))
                         Column(modifier = Modifier.weight(1f)) {
-                            Text(text = book.title)
+                            Text(text = book.title,color = textPrimary,
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 16.sp)
                             Spacer(modifier = Modifier.height(4.dp))
-                            Text(text = book.description ?: "Описание недоступно", maxLines = 3)
+                            Text(text = book.description ?: "Описание недоступно",color = textSecondary, fontSize = 14.sp, maxLines = 3)
                         }
 
                     }

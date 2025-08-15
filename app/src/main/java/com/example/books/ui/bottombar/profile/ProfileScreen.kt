@@ -1,4 +1,4 @@
-package com.example.books.ui.bottombar
+package com.example.books.ui.bottombar.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.google.firebase.auth.FirebaseAuth
+import com.example.books.ui.bottombar.BottomNavigationBar
 
 @Composable
 fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = viewModel()) {

@@ -29,14 +29,14 @@ fun BottomNavigationBar(navController: NavController) {
 
         NavigationBarItem(
             selected = true,
-            onClick = {},
+            onClick = { navController.navigate("catalog") },
             icon = { Icon(Icons.Default.Home, contentDescription = "Главная") },
             label = { Text("Главная") },
             colors = itemColors
         )
         NavigationBarItem(
             selected = false,
-            onClick = {},
+            onClick = { navController.navigate("favorites") },
             icon = { Icon(Icons.Default.Favorite, contentDescription = "Избранное") },
             label = { Text("Избранное") },
             colors = itemColors

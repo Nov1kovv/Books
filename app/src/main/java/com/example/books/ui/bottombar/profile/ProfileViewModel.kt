@@ -1,4 +1,4 @@
-package com.example.books.ui.bottombar
+package com.example.books.ui.bottombar.profile
 
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth

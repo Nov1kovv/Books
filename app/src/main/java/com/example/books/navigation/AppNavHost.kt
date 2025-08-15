@@ -6,12 +6,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.books.ExaminationScreen
+import com.example.books.ui.bottombar.favorite.FavoriteScreen
 import com.example.books.ui.signup.SignUpScreen
 import com.example.books.ui.registration.RegistrationScreen
 import com.example.books.ui.catalog.BookCatalogScreen
 import com.example.books.ui.catalog.BookCatalogViewModel
-import com.example.books.ui.bottombar.ProfileScreen
-import com.example.books.ui.bottombar.ProfileViewModel
+import com.example.books.ui.bottombar.profile.ProfileScreen
+import com.example.books.ui.bottombar.profile.ProfileViewModel
 import com.example.books.ui.details.BookDetailScreen
 import com.example.books.ui.registration.RegistrationViewModel
 import com.example.books.ui.search.SearchScreen
@@ -44,6 +45,9 @@ fun AppNavHost(navController: NavHostController) {
         composable("profile") {
             val viewModel = getViewModel<ProfileViewModel>()
             ProfileScreen(navController = navController, viewModel = viewModel)
+        }
+        composable("favorites") {
+            FavoriteScreen(navController = navController)
         }
         composable("search") {
             SearchScreen(viewModel = searchViewModel, navController = navController)

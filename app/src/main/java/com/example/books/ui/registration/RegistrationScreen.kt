@@ -12,15 +12,21 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import org.orbitmvi.orbit.compose.collectSideEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.books.ui.registration.mvi.RegistrationAction
 import com.example.books.ui.registration.mvi.RegistrationSideEffect
@@ -41,18 +47,44 @@ fun RegistrationScreen(navController: NavController, viewModel: RegistrationView
             }
         }
 
+    val backgroundColor = Color(0xFF121212)
+    val cardColor = Color(0xFF1E1E1E)
+    val textPrimary = Color.White
+    val textSecondary = Color(0xFFB0B0B0)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(backgroundColor)
             .systemBarsPadding()
             .padding(16.dp),
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Text(
+            "Вход",
+            color = textPrimary,
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
         TextField(
             value = state.login,
             onValueChange = { viewModel.dispatch(RegistrationAction.UpdateLogin(it)) },
-            label = { Text("Логин") },
+            label = { Text("Логин",color = textSecondary) },
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = cardColor,
+                unfocusedContainerColor = cardColor,
+                focusedTextColor = textPrimary,
+                unfocusedTextColor = textPrimary,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
             modifier = Modifier.fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -60,16 +92,27 @@ fun RegistrationScreen(navController: NavController, viewModel: RegistrationView
         TextField(
             value = state.password,
             onValueChange = { viewModel.dispatch(RegistrationAction.UpdatePassword(it)) },
-            label = { Text("Пароль") },
+            label = { Text("Пароль",color = textSecondary) },
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = cardColor,
+                unfocusedContainerColor = cardColor,
+                focusedTextColor = textPrimary,
+                unfocusedTextColor = textPrimary,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
             modifier = Modifier.fillMaxWidth()
+                .clip(RoundedCornerShape(12.dp))
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         Button(
             onClick = {
                 viewModel.dispatch(RegistrationAction.SubmitLogin) },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
+            .height(50.dp),
+            shape = RoundedCornerShape(12.dp),
             enabled = !state.isLoading
         ) {
             Text(if (state.isLoading) "Загрузка..." else "Войти")
@@ -85,8 +128,8 @@ fun RegistrationScreen(navController: NavController, viewModel: RegistrationView
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center //выравнивание по центру
         ) {
-            Text(text = "Новый пользователь?")
-            Spacer(modifier = Modifier.width(4.dp))
+            Text(text = "Новый пользователь?", color = textSecondary)
+            Spacer(modifier = Modifier.width(6.dp))
             Text(
                 text = "Зарегистрироваться",
                 color = MaterialTheme.colorScheme.primary,

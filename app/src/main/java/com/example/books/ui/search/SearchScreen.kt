@@ -51,23 +51,23 @@ fun SearchScreen(viewModel: SearchViewModel, navController: NavController) {
 
     Box(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxSize()// Box занимает весь экран
             .background(backgroundColor)
-            .padding(16.dp)
+            .padding(16.dp)// отступ от краёв экрана
     ) {
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .systemBarsPadding()
+                .systemBarsPadding() // отступ сверху для статус бара и навигационной панели
                 .background(backgroundColor)
                 .padding(16.dp)
         ) {
             Text(
                 "Поиск книг",
                 color = textPrimary,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp, // размер текста заголовка
+                fontWeight = FontWeight.Bold, // жирынй цвет
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -79,22 +79,22 @@ fun SearchScreen(viewModel: SearchViewModel, navController: NavController) {
                     viewModel.dispatch(BookCatalogAction.Search(query))
                                 },
                 placeholder = { Text("Введите название книги") },
-                singleLine = true,
+                singleLine = true, // одна строка текста
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Search,
                         contentDescription = "Поиск",
-                        tint = textSecondary
+                        tint = textSecondary // менее яркая
                     )
                 },
                 colors = TextFieldDefaults.colors(
-                    focusedContainerColor = cardColor,
-                    unfocusedContainerColor = cardColor,
-                    focusedTextColor = textPrimary,
+                    focusedContainerColor = cardColor, // фон при фокусе
+                    unfocusedContainerColor = cardColor,// фон без фокуса
+                    focusedTextColor = textPrimary, // цвет текста
                     unfocusedTextColor = textPrimary,
-                    focusedPlaceholderColor = textSecondary,
+                    focusedPlaceholderColor = textSecondary, // цвет подсказки
                     unfocusedPlaceholderColor = textSecondary,
-                    focusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent, // убираем линию снизу
                     unfocusedIndicatorColor = Color.Transparent
                 ),
                 modifier = Modifier
@@ -123,7 +123,6 @@ fun SearchScreen(viewModel: SearchViewModel, navController: NavController) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(12.dp))
-                            .background(cardColor)
                             .padding(10.dp)
                     ) {
                         if (book.imageUrl != null) {
@@ -153,5 +152,6 @@ fun SearchScreen(viewModel: SearchViewModel, navController: NavController) {
                 }
             }
         }
+        Spacer(modifier = Modifier.height(12.dp))
     }
 }

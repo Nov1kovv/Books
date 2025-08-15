@@ -40,28 +40,29 @@ import org.orbitmvi.orbit.compose.collectAsState
 fun BookCatalogScreen(navController: NavController, viewModel: BookCatalogViewModel) {
     val state by viewModel.collectAsState()
 
-    val backgroundColor = Color(0xFF121212)
-    val cardColor = Color(0xFF1E1E1E)
-    val textPrimary = Color.White
-    val textSecondary = Color(0xFFB0B0B0)
+    val backgroundColor = Color(0xFF121212)// основной фон экрана
+    val cardColor = Color(0xFF1E1E1E)//фон карточек книги
+    val textPrimary = Color.White // основной цвет текста
+    val textSecondary = Color(0xFFB0B0B0)// второстепенный текст
 
     Scaffold(
         containerColor = backgroundColor,
         bottomBar = {
             BottomNavigationBar(navController)
         }
-    ) { innerPadding ->
+    ) { innerPadding -> // innerPadding это отступы, чтобы контент не перекрывался bottomBar
 
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxSize() // колонка занимает весь экран
                 .padding(innerPadding) // отступ от bottomBar
-                .padding(16.dp)
+                .padding(16.dp) //внутренние отступы контента
                 .background(backgroundColor)
         ) {
             Text("Каталог книг", color = textPrimary,
                 fontSize = 24.sp,
-                fontWeight = FontWeight.Bold, modifier = Modifier.fillMaxWidth())
+                fontWeight = FontWeight.Bold, // жирный шрифт
+                modifier = Modifier.fillMaxWidth()) // текст растягивается на всю ширину
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -70,31 +71,31 @@ fun BookCatalogScreen(navController: NavController, viewModel: BookCatalogViewMo
                 onValueChange = {},
                 enabled = false,
                 colors = TextFieldDefaults.colors(
-                    disabledContainerColor = cardColor,
-                    disabledTextColor = textPrimary,
-                    disabledPlaceholderColor = textSecondary,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
+                    disabledContainerColor = cardColor, // фон неактивного поля
+                    disabledTextColor = textPrimary, // цвет текста
+                    disabledPlaceholderColor = textSecondary, // цвет подсказки
+                    focusedIndicatorColor = Color.Transparent, // убираем линию при фокусе
+                    unfocusedIndicatorColor = Color.Transparent // убираем линию без фокуса
                 ),
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(12.dp))
+                    .fillMaxWidth() // занимает всю ширину
+                    .clip(RoundedCornerShape(12.dp)) //скругление
                     .clickable { navController?.navigate("search") },
                 placeholder = { Text("Нажмите, чтобы искать книги") }
             )
 
             LazyColumn(
                 modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
+                    .weight(1f) // занимает оставшееся пространство экрана
+                    .fillMaxWidth() // растягивается на всю ширину
             ) {
                 items(state.books) { book ->
                     Row(
-                        verticalAlignment = Alignment.Top,
+                        verticalAlignment = Alignment.Top, // выравниваем по верхнему краю
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(12.dp))
-                            .padding(10.dp)
+                            .padding(10.dp) // внутренние отступы
                     ) {
                         if (book.imageUrl != null) {
                             AsyncImage(
@@ -112,8 +113,8 @@ fun BookCatalogScreen(navController: NavController, viewModel: BookCatalogViewMo
                         Spacer(modifier = Modifier.width(12.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(text = book.title,color = textPrimary,
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 16.sp)
+                                fontWeight = FontWeight.SemiBold, // полужирный текст
+                                fontSize = 16.sp) // размер шрифта
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(text = book.description ?: "Описание недоступно",color = textSecondary, fontSize = 14.sp, maxLines = 3)
                         }

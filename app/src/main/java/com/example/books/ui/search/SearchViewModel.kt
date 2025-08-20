@@ -1,14 +1,12 @@
 package com.example.books.ui.search
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.books.domain.model.Book
-import com.example.books.domain.repository.BookRepository
+import com.example.domain.model.Book
+import com.example.domain.repository.BookRepository
 import com.example.books.ui.search.mvi.BookCatalogAction
 import com.example.books.ui.search.mvi.BookCatalogSideEffect
 import com.example.books.ui.search.mvi.BookCatalogState
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 

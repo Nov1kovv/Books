@@ -2,7 +2,7 @@ package com.example.books.di
 
 import com.example.books.data.api.GoogleBooksApi
 import com.example.books.data.repository.BookRepositoryImpl
-import com.example.books.domain.repository.BookRepository
+import com.example.domain.repository.BookRepository
 import com.example.books.ui.bottombar.profile.ProfileViewModel
 import com.example.books.ui.catalog.BookCatalogViewModel
 import com.example.books.ui.registration.RegistrationViewModel

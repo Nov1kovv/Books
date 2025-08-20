@@ -1,6 +1,6 @@
 package com.example.books.ui.search.mvi
 
-import com.example.books.domain.model.Book
+import com.example.domain.model.Book
 
 sealed class BookCatalogAction {
     data class Search(val query: String) : BookCatalogAction()

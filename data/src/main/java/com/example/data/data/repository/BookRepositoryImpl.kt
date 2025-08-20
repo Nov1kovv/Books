@@ -1,8 +1,8 @@
 package com.example.books.data.repository
 
 import com.example.books.data.api.GoogleBooksApi
-import com.example.books.domain.model.Book
-import com.example.books.domain.repository.BookRepository
+import com.example.domain.model.Book
+import com.example.domain.repository.BookRepository
 
 class BookRepositoryImpl(
     private val api: GoogleBooksApi

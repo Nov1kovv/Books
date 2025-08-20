@@ -2,8 +2,8 @@ package com.example.books.ui.catalog
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.books.domain.model.Book
-import com.example.books.domain.repository.BookRepository
+import com.example.domain.model.Book
+import com.example.domain.repository.BookRepository
 import com.example.books.ui.search.mvi.BookCatalogAction
 import com.example.books.ui.search.mvi.BookCatalogSideEffect
 import com.example.books.ui.search.mvi.BookCatalogState

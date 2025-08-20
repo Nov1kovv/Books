@@ -1,6 +1,6 @@
-package com.example.books.domain.repository
+package com.example.domain.repository
 
-import com.example.books.domain.model.Book
+import com.example.domain.model.Book
 
 interface BookRepository {
     suspend fun searchBooks(query: String): List<Book>

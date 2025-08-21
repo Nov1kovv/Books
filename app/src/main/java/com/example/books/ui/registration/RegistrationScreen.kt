@@ -20,7 +20,6 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import org.orbitmvi.orbit.compose.collectSideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -31,6 +30,7 @@ import androidx.navigation.NavController
 import com.example.books.ui.registration.mvi.RegistrationAction
 import com.example.books.ui.registration.mvi.RegistrationSideEffect
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun RegistrationScreen(navController: NavController, viewModel: RegistrationViewModel) {
@@ -38,14 +38,15 @@ fun RegistrationScreen(navController: NavController, viewModel: RegistrationView
     val state = viewModel.collectAsState().value
 
     viewModel.collectSideEffect { sideEffect ->
-            when (sideEffect) {
-                is RegistrationSideEffect.NavigateToCatalog -> {
-                    navController.navigate("catalog")
-                }
-                is RegistrationSideEffect.ShowError -> {
-                }
+        when (sideEffect) {
+            is RegistrationSideEffect.NavigateToCatalog -> {
+                navController.navigate("catalog")
+            }
+
+            is RegistrationSideEffect.ShowError -> {
             }
         }
+    }
 
     val backgroundColor = Color(0xFF121212)
     val cardColor = Color(0xFF1E1E1E)
@@ -74,7 +75,7 @@ fun RegistrationScreen(navController: NavController, viewModel: RegistrationView
         TextField(
             value = state.login,
             onValueChange = { viewModel.dispatch(RegistrationAction.UpdateLogin(it)) },
-            label = { Text("Логин",color = textSecondary) },
+            label = { Text("Логин", color = textSecondary) },
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = cardColor,
                 unfocusedContainerColor = cardColor,
@@ -83,8 +84,9 @@ fun RegistrationScreen(navController: NavController, viewModel: RegistrationView
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),
-            modifier = Modifier.fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(12.dp))
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -92,7 +94,7 @@ fun RegistrationScreen(navController: NavController, viewModel: RegistrationView
         TextField(
             value = state.password,
             onValueChange = { viewModel.dispatch(RegistrationAction.UpdatePassword(it)) },
-            label = { Text("Пароль",color = textSecondary) },
+            label = { Text("Пароль", color = textSecondary) },
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = cardColor,
                 unfocusedContainerColor = cardColor,
@@ -101,7 +103,8 @@ fun RegistrationScreen(navController: NavController, viewModel: RegistrationView
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(12.dp))
         )
 
@@ -109,9 +112,11 @@ fun RegistrationScreen(navController: NavController, viewModel: RegistrationView
 
         Button(
             onClick = {
-                viewModel.dispatch(RegistrationAction.SubmitLogin) },
-            modifier = Modifier.fillMaxWidth()
-            .height(50.dp),
+                viewModel.dispatch(RegistrationAction.SubmitLogin)
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp),
             shape = RoundedCornerShape(12.dp),
             enabled = !state.isLoading
         ) {

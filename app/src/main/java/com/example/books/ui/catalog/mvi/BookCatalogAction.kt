@@ -1,4 +1,4 @@
-package com.example.books.ui.search.mvi
+package com.example.books.ui.catalog.mvi
 
 import com.example.domain.model.Book
 

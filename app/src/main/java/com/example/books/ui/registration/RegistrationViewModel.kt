@@ -14,15 +14,21 @@ import org.orbitmvi.orbit.viewmodel.container
 class RegistrationViewModel : ViewModel(),
     ContainerHost<RegistrationState, RegistrationSideEffect> {
 
-        override val container = container<RegistrationState, RegistrationSideEffect>(
+    override val container = container<RegistrationState, RegistrationSideEffect>(
         RegistrationState()
     )
 
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()//экземпляр FirebaseAuth — это объект, который управляет аутентификацией пользователей в Firebase
+    private val auth: FirebaseAuth =
+        FirebaseAuth.getInstance()//экземпляр FirebaseAuth — это объект, который управляет аутентификацией пользователей в Firebase
 
     private val ceh = CoroutineExceptionHandler { _, throwable ->
         intent {
-            reduce { state.copy(isLoading = false, errorMessage = throwable.message) }//Меняет состояние state то, что нужно отобразить на экране
+            reduce {
+                state.copy(
+                    isLoading = false,
+                    errorMessage = throwable.message
+                )
+            }//Меняет состояние state то, что нужно отобразить на экране
             postSideEffect(RegistrationSideEffect.ShowError(throwable.message ?: "Ошибка"))
         }
     }

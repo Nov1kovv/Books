@@ -2,7 +2,6 @@ package com.example.books.ui.catalog
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -34,13 +32,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.books.ui.bottombar.BottomNavigationBar
-import com.example.books.ui.search.mvi.BookCatalogAction
+import com.example.books.ui.catalog.mvi.BookCatalogAction
 import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
@@ -66,10 +63,12 @@ fun BookCatalogScreen(navController: NavController, viewModel: BookCatalogViewMo
                 .padding(16.dp) //внутренние отступы контента
                 .background(backgroundColor)
         ) {
-            Text("Каталог книг", color = textPrimary,
+            Text(
+                "Каталог книг", color = textPrimary,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold, // жирный шрифт
-                modifier = Modifier.fillMaxWidth()) // текст растягивается на всю ширину
+                modifier = Modifier.fillMaxWidth()
+            ) // текст растягивается на всю ширину
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -100,7 +99,7 @@ fun BookCatalogScreen(navController: NavController, viewModel: BookCatalogViewMo
                 modifier = Modifier
                     .fillMaxWidth() // занимает всю ширину
                     .clip(RoundedCornerShape(12.dp)), //скругление
-                        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search), //ввод на кнопке заменяется на поискк
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search), //ввод на кнопке заменяется на поискк
                 keyboardActions = KeyboardActions( //это обработка действий с клавиатуры
                     onSearch = {
                         if (state.query.isNotBlank()) {//если query не пустое то вызывается функции searchBooks
@@ -138,11 +137,18 @@ fun BookCatalogScreen(navController: NavController, viewModel: BookCatalogViewMo
                         }
                         Spacer(modifier = Modifier.width(12.dp))
                         Column(modifier = Modifier.weight(1f)) {
-                            Text(text = book.title,color = textPrimary,
+                            Text(
+                                text = book.title, color = textPrimary,
                                 fontWeight = FontWeight.SemiBold, // полужирный текст
-                                fontSize = 16.sp) // размер шрифта
+                                fontSize = 16.sp
+                            ) // размер шрифта
                             Spacer(modifier = Modifier.height(4.dp))
-                            Text(text = book.description ?: "Описание недоступно",color = textSecondary, fontSize = 14.sp, maxLines = 3)
+                            Text(
+                                text = book.description ?: "Описание недоступно",
+                                color = textSecondary,
+                                fontSize = 14.sp,
+                                maxLines = 3
+                            )
                         }
 
                     }

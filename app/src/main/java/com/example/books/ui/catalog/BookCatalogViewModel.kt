@@ -2,20 +2,20 @@ package com.example.books.ui.catalog
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.books.ui.catalog.mvi.BookCatalogAction
+import com.example.books.ui.catalog.mvi.BookCatalogSideEffect
+import com.example.books.ui.catalog.mvi.BookCatalogState
 import com.example.domain.model.Book
 import com.example.domain.repository.BookRepository
-import com.example.books.ui.search.mvi.BookCatalogAction
-import com.example.books.ui.search.mvi.BookCatalogSideEffect
-import com.example.books.ui.search.mvi.BookCatalogState
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 
-class BookCatalogViewModel( private val repository: BookRepository) : ViewModel(),
+class BookCatalogViewModel(private val repository: BookRepository) : ViewModel(),
     ContainerHost<BookCatalogState, BookCatalogSideEffect> {
 
-        override val container = container<BookCatalogState, BookCatalogSideEffect>(
+    override val container = container<BookCatalogState, BookCatalogSideEffect>(
         BookCatalogState()
     )
 
@@ -34,23 +34,36 @@ class BookCatalogViewModel( private val repository: BookRepository) : ViewModel(
         when (action) {
             is BookCatalogAction.Search -> searchBooks(action.query)
             is BookCatalogAction.SelectBook -> handleSelectBook(action.book)
-            }
         }
+    }
 
     private fun searchBooks(query: String) = intent {
         viewModelScope.launch(ceh) { //запускается корутина с обработкой от ошибок (ceh)
-            reduce { state.copy(isLoading = true, error = null, query = query) }//Меняет состояние state то, что нужно отобразить на экране
+            reduce {
+                state.copy(
+                    isLoading = true,
+                    error = null,
+                    query = query
+                )
+            }//Меняет состояние state то, что нужно отобразить на экране
             val result = repository.searchBooks(query)
-            reduce { state.copy(books = result, isLoading = false) }//Меняет состояние state то, что нужно отобразить на экране
+            reduce {
+                state.copy(
+                    books = result,
+                    isLoading = false
+                )
+            }//Меняет состояние state то, что нужно отобразить на экране
         }
     }
 
-    private fun handleSelectBook(book: Book) = intent { //сохраняет выбранную книгу в состояние и навигирует к Detail экрану
-        viewModelScope.launch(ceh) { //запускается корутина с обработкой от ошибок (ceh)
-            reduce { state.copy(selectedBook = book) } //состояние обновляется, выбранная книга сохраняется в state.selectedBook
-            postSideEffect(BookCatalogSideEffect.NavigateToDetail(book.id))
+    private fun handleSelectBook(book: Book) =
+        intent { //сохраняет выбранную книгу в состояние и навигирует к Detail экрану
+            viewModelScope.launch(ceh) { //запускается корутина с обработкой от ошибок (ceh)
+                reduce { state.copy(selectedBook = book) } //состояние обновляется, выбранная книга сохраняется в state.selectedBook
+                postSideEffect(BookCatalogSideEffect.NavigateToDetail(book.id))
+            }
         }
-    }
+
     fun getBookById(bookId: String): Book? {
         return container.stateFlow.value.books.find { it.id == bookId }
     }

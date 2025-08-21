@@ -1,7 +1,6 @@
 package com.example.books.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -46,9 +45,6 @@ fun AppNavHost(navController: NavHostController) {
         composable("favorites") {
             FavoriteScreen(navController = navController)
         }
-//        composable("search") {
-//            SearchScreen(viewModel = searchViewModel, navController = navController)
-//        }
         composable("detail/{bookId}") { backStackEntry ->
             val bookId = backStackEntry.arguments?.getString("bookId") ?: ""
             BookDetailScreen(bookId = bookId, viewModel = catalogViewModel)

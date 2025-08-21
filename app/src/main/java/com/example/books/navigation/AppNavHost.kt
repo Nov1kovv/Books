@@ -1,6 +1,7 @@
 package com.example.books.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -15,14 +16,11 @@ import com.example.books.ui.bottombar.profile.ProfileScreen
 import com.example.books.ui.bottombar.profile.ProfileViewModel
 import com.example.books.ui.details.BookDetailScreen
 import com.example.books.ui.registration.RegistrationViewModel
-import com.example.books.ui.search.SearchScreen
-import com.example.books.ui.search.SearchViewModel
 import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun AppNavHost(navController: NavHostController) {
     val catalogViewModel: BookCatalogViewModel = getViewModel()
-    val searchViewModel: SearchViewModel = getViewModel()
     // NavHost это контейнер, который отображает текущий экран в зависимости от навигационного состояния.
     // navController контроллер, который управляет переходами между экранами.
     // startDestination экран, который будет показан первым при запуске приложения.
@@ -39,8 +37,7 @@ fun AppNavHost(navController: NavHostController) {
             SignUpScreen(navController, viewModel)
         }
         composable("catalog") {
-            val viewModel = getViewModel<BookCatalogViewModel>()
-            BookCatalogScreen(navController = navController, viewModel = viewModel)
+            BookCatalogScreen(navController = navController, viewModel = catalogViewModel)
         }
         composable("profile") {
             val viewModel = getViewModel<ProfileViewModel>()
@@ -49,12 +46,12 @@ fun AppNavHost(navController: NavHostController) {
         composable("favorites") {
             FavoriteScreen(navController = navController)
         }
-        composable("search") {
-            SearchScreen(viewModel = searchViewModel, navController = navController)
-        }
+//        composable("search") {
+//            SearchScreen(viewModel = searchViewModel, navController = navController)
+//        }
         composable("detail/{bookId}") { backStackEntry ->
             val bookId = backStackEntry.arguments?.getString("bookId") ?: ""
-            BookDetailScreen(bookId = bookId, viewModel = searchViewModel)
+            BookDetailScreen(bookId = bookId, viewModel = catalogViewModel)
         }
     }
 }

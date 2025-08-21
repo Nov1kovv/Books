@@ -6,7 +6,6 @@ import com.example.domain.repository.BookRepository
 import com.example.books.ui.bottombar.profile.ProfileViewModel
 import com.example.books.ui.catalog.BookCatalogViewModel
 import com.example.books.ui.registration.RegistrationViewModel
-import com.example.books.ui.search.SearchViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -19,6 +18,9 @@ val appModule = module {
             .baseUrl("https://www.googleapis.com/books/v1/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+        //логирование запрос inreceptor
+        //если rx java, то будет flow intereptor что-то такое
+        //смотрю запрос,
     }
 
     single<GoogleBooksApi> {
@@ -31,9 +33,6 @@ val appModule = module {
 
     viewModel {
         BookCatalogViewModel(repository = get())
-    }
-    viewModel {
-        SearchViewModel(repository = get())
     }
     viewModel {
         ProfileViewModel()

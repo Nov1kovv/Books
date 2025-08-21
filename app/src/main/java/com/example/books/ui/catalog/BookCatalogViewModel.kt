@@ -51,4 +51,7 @@ class BookCatalogViewModel( private val repository: BookRepository) : ViewModel(
             postSideEffect(BookCatalogSideEffect.NavigateToDetail(book.id))
         }
     }
+    fun getBookById(bookId: String): Book? {
+        return container.stateFlow.value.books.find { it.id == bookId }
+    }
 }

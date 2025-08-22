@@ -95,4 +95,6 @@ dependencies {
     testImplementation(libs.orbit.test)
 
     implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
+
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 }

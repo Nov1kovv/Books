@@ -38,6 +38,9 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.books.ui.bottombar.BottomNavigationBar
 import com.example.books.ui.catalog.mvi.BookCatalogAction
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.material.placeholder
+import com.google.accompanist.placeholder.material.shimmer
 import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
@@ -133,6 +136,12 @@ fun BookCatalogScreen(navController: NavController, viewModel: BookCatalogViewMo
                                     .clickable {
                                         navController.navigate("detail/${book.id}")
                                     }
+                                    .placeholder(
+                                        visible = state.isLoading,
+                                        highlight = PlaceholderHighlight.shimmer(),
+                                        color = Color.DarkGray,
+                                        shape = RoundedCornerShape(8.dp)
+                                    )
                             )
                         }
                         Spacer(modifier = Modifier.width(12.dp))

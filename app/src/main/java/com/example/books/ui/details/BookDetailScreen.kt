@@ -72,6 +72,7 @@ fun BookDetailScreen(bookId: String, viewModel: BookCatalogViewModel) {
                 Text(text = book.title, color = Color.White)
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(text = book.description ?: "Описание недоступно", color = Color(0xFFCCCCCC))
+
             }
         }
 

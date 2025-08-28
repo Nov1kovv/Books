@@ -13,9 +13,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,13 +30,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.books.ui.bottombar.favorite.FavoriteBook
+import com.example.books.ui.bottombar.favorite.FavoriteViewModel
 import com.example.books.ui.catalog.BookCatalogViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
-fun BookDetailScreen(bookId: String, viewModel: BookCatalogViewModel) {
-//    val state by viewModel.collectAsState()
-//    val book = state.books.find { it.id == bookId }
-    val book = viewModel.getBookById(bookId)
+fun BookDetailScreen(bookId: String, catalogViewModel: BookCatalogViewModel, favoriteViewModel: FavoriteViewModel) {
+    val book = catalogViewModel.getBookById(bookId)
+    val favorites by favoriteViewModel.favorites.collectAsState()
 
     if (book == null) {
         Box(
@@ -46,6 +56,9 @@ fun BookDetailScreen(bookId: String, viewModel: BookCatalogViewModel) {
         }
         return
     }
+
+    val isFavorite = favorites.any { it.id == book.id }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -77,5 +90,29 @@ fun BookDetailScreen(bookId: String, viewModel: BookCatalogViewModel) {
         }
 
         Spacer(modifier = Modifier.height(16.dp))
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+            Button(
+                onClick = {
+                    if (isFavorite) {
+                        favoriteViewModel.removeFromFavorites(book.id)
+                    } else {
+                        favoriteViewModel.addToFavorites(
+                            FavoriteBook(
+                                id = book.id,
+                                title = book.title,
+                                description = book.description ?: "",
+                                imageUrl = book.imageUrl ?: "",
+                                userId = "" // userId во ViewModel
+                            )
+                        )
+                    }
+                }
+            ){
+                Text(if (isFavorite) "Убрать из избранного" else "Добавить в избранное")
+            }
+        }
     }
 }

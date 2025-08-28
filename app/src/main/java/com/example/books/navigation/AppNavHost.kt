@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.books.ExaminationScreen
 import com.example.books.ui.bottombar.favorite.FavoriteScreen
+import com.example.books.ui.bottombar.favorite.FavoriteViewModel
 import com.example.books.ui.signup.SignUpScreen
 import com.example.books.ui.registration.RegistrationScreen
 import com.example.books.ui.catalog.BookCatalogScreen
@@ -20,6 +21,7 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun AppNavHost(navController: NavHostController) {
     val catalogViewModel: BookCatalogViewModel = getViewModel()
+    val favoriteViewModel: FavoriteViewModel = getViewModel()
     // NavHost это контейнер, который отображает текущий экран в зависимости от навигационного состояния.
     // navController контроллер, который управляет переходами между экранами.
     // startDestination экран, который будет показан первым при запуске приложения.
@@ -43,11 +45,11 @@ fun AppNavHost(navController: NavHostController) {
             ProfileScreen(navController = navController, viewModel = viewModel)
         }
         composable("favorites") {
-            FavoriteScreen(navController = navController)
+            FavoriteScreen(navController = navController, viewModel = favoriteViewModel)
         }
         composable("detail/{bookId}") { backStackEntry ->
             val bookId = backStackEntry.arguments?.getString("bookId") ?: ""
-            BookDetailScreen(bookId = bookId, viewModel = catalogViewModel)
+            BookDetailScreen(bookId = bookId, catalogViewModel = catalogViewModel, favoriteViewModel = favoriteViewModel)
         }
     }
 }

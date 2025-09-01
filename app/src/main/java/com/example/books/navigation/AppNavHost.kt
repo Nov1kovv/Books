@@ -15,8 +15,10 @@ import com.example.books.ui.catalog.BookCatalogViewModel
 import com.example.books.ui.bottombar.profile.ProfileScreen
 import com.example.books.ui.bottombar.profile.ProfileViewModel
 import com.example.books.ui.details.BookDetailScreen
+import com.example.books.ui.details.BookDetailViewModel
 import com.example.books.ui.registration.RegistrationViewModel
 import org.koin.androidx.compose.getViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun AppNavHost(navController: NavHostController) {
@@ -49,7 +51,10 @@ fun AppNavHost(navController: NavHostController) {
         }
         composable("detail/{bookId}") { backStackEntry ->
             val bookId = backStackEntry.arguments?.getString("bookId") ?: ""
-            BookDetailScreen(bookId = bookId, catalogViewModel = catalogViewModel, favoriteViewModel = favoriteViewModel)
+            val detailViewModel: BookDetailViewModel = getViewModel(
+                parameters = { parametersOf(catalogViewModel, favoriteViewModel) }
+            )
+            BookDetailScreen(viewModel = detailViewModel, bookId = bookId)
         }
     }
 }

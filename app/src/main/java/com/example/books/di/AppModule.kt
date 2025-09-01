@@ -6,6 +6,7 @@ import com.example.books.ui.bottombar.favorite.FavoriteViewModel
 import com.example.domain.repository.BookRepository
 import com.example.books.ui.bottombar.profile.ProfileViewModel
 import com.example.books.ui.catalog.BookCatalogViewModel
+import com.example.books.ui.details.BookDetailViewModel
 import com.example.books.ui.registration.RegistrationViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -57,5 +58,8 @@ val appModule = module {
     }
     viewModel {
         FavoriteViewModel()
+    }
+    viewModel { (catalogViewModel: BookCatalogViewModel, favoriteViewModel: FavoriteViewModel) ->
+        BookDetailViewModel(catalogViewModel, favoriteViewModel)
     }
 }

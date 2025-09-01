@@ -14,15 +14,11 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,88 +26,56 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.books.ui.bottombar.favorite.FavoriteBook
-import com.example.books.ui.bottombar.favorite.FavoriteViewModel
-import com.example.books.ui.catalog.BookCatalogViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
-fun BookDetailScreen(bookId: String, catalogViewModel: BookCatalogViewModel, favoriteViewModel: FavoriteViewModel) {
-    val book = catalogViewModel.getBookById(bookId)
-    val favorites by favoriteViewModel.favorites.collectAsState()
+fun BookDetailScreen(viewModel: BookDetailViewModel, bookId: String) {
+    val state by viewModel.state.collectAsState()
 
+    LaunchedEffect(bookId) {
+        viewModel.loadBook(bookId)
+    }
+
+    val book = state.book
     if (book == null) {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color(0xFF121212)),
+            Modifier.fillMaxSize().background(Color(0xFF121212)),
             contentAlignment = Alignment.Center
-
         ) {
-            Text(
-                "Книга не найдена", style = MaterialTheme.typography.titleMedium,
-                color = Color.White
-            )
+            Text("Книга не найдена", color = Color.White)
         }
         return
     }
 
-    val isFavorite = favorites.any { it.id == book.id }
-
     Column(
-        modifier = Modifier
-            .fillMaxSize()
+        Modifier.fillMaxSize()
             .background(Color(0xFF121212))
             .systemBarsPadding()
             .padding(16.dp)
-
     ) {
-        Row(modifier = Modifier.fillMaxWidth()) {
+        Row(Modifier.fillMaxWidth()) {
             if (book.imageUrl != null) {
                 AsyncImage(
                     model = book.imageUrl,
                     contentDescription = book.title,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(width = 160.dp, height = 220.dp)
-                        .clip(RoundedCornerShape(12.dp)) //скругленные углы
+                    modifier = Modifier.size(160.dp, 220.dp)
+                        .clip(RoundedCornerShape(12.dp))
                         .padding(2.dp)
                 )
-                Spacer(modifier = Modifier.width(20.dp))
+                Spacer(Modifier.width(20.dp))
             }
 
             Column {
-                Text(text = book.title, color = Color.White)
-                Spacer(modifier = Modifier.height(12.dp))
-                Text(text = book.description ?: "Описание недоступно", color = Color(0xFFCCCCCC))
-
+                Text(book.title, color = Color.White)
+                Spacer(Modifier.height(12.dp))
+                Text(book.description ?: "Описание недоступно", color = Color(0xFFCCCCCC))
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-        Box(
-            modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.Center
-        ) {
-            Button(
-                onClick = {
-                    if (isFavorite) {
-                        favoriteViewModel.removeFromFavorites(book.id)
-                    } else {
-                        favoriteViewModel.addToFavorites(
-                            FavoriteBook(
-                                id = book.id,
-                                title = book.title,
-                                description = book.description ?: "",
-                                imageUrl = book.imageUrl ?: "",
-                                userId = "" // userId во ViewModel
-                            )
-                        )
-                    }
-                }
-            ){
-                Text(if (isFavorite) "Убрать из избранного" else "Добавить в избранное")
+        Spacer(Modifier.height(16.dp))
+        Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+            Button(onClick = { viewModel.toggleFavorite() }) {
+                Text(if (state.isFavorite) "Убрать из избранного" else "Добавить в избранное")
             }
         }
     }

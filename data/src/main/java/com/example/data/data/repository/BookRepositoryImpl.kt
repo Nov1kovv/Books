@@ -19,4 +19,18 @@ class BookRepositoryImpl(
             )
         }
     }
+    override suspend fun getBookById(id: String): Book? {
+        return try {
+            val item = api.getVolume(id)
+            Book(
+                id = item.id,
+                title = item.volumeInfo.title,
+                authors = item.volumeInfo.authors,
+                description = item.volumeInfo.description,
+                imageUrl = item.volumeInfo.imageLinks?.thumbnail
+            )
+        } catch (e: Exception) {
+            null
+        }
+    }
 }

@@ -60,6 +60,10 @@ val appModule = module {
         FavoriteViewModel()
     }
     viewModel { (catalogViewModel: BookCatalogViewModel, favoriteViewModel: FavoriteViewModel) ->
-        BookDetailViewModel(catalogViewModel, favoriteViewModel)
+        BookDetailViewModel(
+            catalogViewModel = catalogViewModel,
+            favoriteViewModel = favoriteViewModel,
+            repository = get()
+        )
     }
 }

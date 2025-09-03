@@ -7,8 +7,8 @@ import com.example.domain.repository.BookRepository
 class BookRepositoryImpl(
     private val api: GoogleBooksApi
 ) : BookRepository {
-    override suspend fun searchBooks(query: String): List<Book> {
-        val response = api.searchBooks(query)
+    override suspend fun searchBooks(query: String, startIndex: Int, maxResults: Int): List<Book> {
+        val response = api.searchBooks(query, startIndex, maxResults)
         return response.items.map {
             Book(
                 id = it.id,

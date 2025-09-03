@@ -2,6 +2,7 @@ package com.example.books.ui.catalog
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -24,7 +26,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,12 +45,15 @@ import com.example.books.ui.catalog.mvi.BookCatalogAction
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
 import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun BookCatalogScreen(navController: NavController, viewModel: BookCatalogViewModel) {
     val state by viewModel.collectAsState()
-
+    val listState = rememberLazyListState()
     val backgroundColor = Color(0xFF121212)// основной фон экрана
     val cardColor = Color(0xFF1E1E1E)//фон карточек книги
     val textPrimary = Color.White // основной цвет текста
@@ -113,6 +120,7 @@ fun BookCatalogScreen(navController: NavController, viewModel: BookCatalogViewMo
             )
 
             LazyColumn(
+                state = listState,
                 modifier = Modifier
                     .weight(1f) // занимает оставшееся пространство экрана
                     .fillMaxWidth() // растягивается на всю ширину
@@ -162,6 +170,31 @@ fun BookCatalogScreen(navController: NavController, viewModel: BookCatalogViewMo
 
                     }
                 }
+                if (state.isLoading) {
+                    item {
+                        Box(
+                            Modifier
+                                .fillMaxWidth()
+                                .height(50.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text("Загрузка...", color = Color.White)
+                        }
+                    }
+                }
+            }
+
+            // отслеживаем скролл для подгрузки следующей страницы
+            LaunchedEffect(listState) {
+                snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
+                    .filterNotNull()
+                    .distinctUntilChanged()
+                    .collectLatest { lastVisibleIndex ->
+                        val totalItems = state.books.size
+                        if (lastVisibleIndex >= totalItems - 5) { // 5 элементов до конца
+                            viewModel.loadNextPage()
+                        }
+                    }
             }
         }
     }

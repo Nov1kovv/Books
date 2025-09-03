@@ -24,7 +24,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 
 @Composable
@@ -74,8 +76,19 @@ fun BookDetailScreen(viewModel: BookDetailViewModel, bookId: String) {
 
         Spacer(Modifier.height(16.dp))
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-            Button(onClick = { viewModel.toggleFavorite() }) {
-                Text(if (state.isFavorite) "Убрать из избранного" else "Добавить в избранное")
+            Button(onClick = { viewModel.toggleFavorite() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF1E1E1E),
+                    contentColor = Color.White
+                )
+                ) {
+                Text(if (state.isFavorite) "Убрать из избранного" else "Добавить в избранное",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold)
             }
         }
     }

@@ -11,17 +11,31 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class BookDetailViewModel(
-    private val catalogViewModel: BookCatalogViewModel,
-    private val favoriteViewModel: FavoriteViewModel,
-    private val repository: BookRepository
+    private val catalogViewModel: BookCatalogViewModel, // для доступа к списку книг из каталога
+    private val favoriteViewModel: FavoriteViewModel, // для работы с избранными книгами
+    private val repository: BookRepository // для загрузки книги по id из API
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(BookDetailState())
-    val state: StateFlow<BookDetailState> = _state
+    private val _state = MutableStateFlow(BookDetailState()) // внутреннее состояние экрана
+    val state: StateFlow<BookDetailState> = _state // публичное состояние для UI
 
+    init { // Подписка на изменения избранного пользователя
+        viewModelScope.launch {
+            favoriteViewModel.favorites.collect { favs ->
+                val currentBook = _state.value.book
+                if (currentBook != null) {
+                    val isFav = favs.any { it.id == currentBook.id }
+                    _state.value = _state.value.copy(isFavorite = isFav)
+                }
+            }
+        }
+    }
+
+    // Загружает книгу по bookId
+    // Сначала проверяет каталог потом избранное, потом API
     fun loadBook(bookId: String) {
         viewModelScope.launch {
-            // сначала пробуем найти в каталоге
+            // сначала ищу  в каталоге
             val fromCatalog = catalogViewModel.getBookById(bookId)
             if (fromCatalog != null) {
                 _state.value = BookDetailState(
@@ -31,14 +45,14 @@ class BookDetailViewModel(
                 return@launch
             }
 
-            // если не нашли — пробуем взять из избранного
+            // если нету в каталоге, то ищу в избранном
             val fromFav = favoriteViewModel.favorites.value.find { it.id == bookId }
             if (fromFav != null) {
                 _state.value = BookDetailState(
                     book = com.example.domain.model.Book(
                         id = fromFav.id,
                         title = fromFav.title,
-                        authors = emptyList(), // authors у FavoriteBook нет
+                        authors = emptyList(),
                         description = fromFav.description,
                         imageUrl = fromFav.imageUrl
                     ),
@@ -47,7 +61,7 @@ class BookDetailViewModel(
                 return@launch
             }
 
-            // если нет ни там, ни там — идём в сеть
+            // если нет нигде, то запрос в сеть
             val fromApi = repository.getBookById(bookId)
             if (fromApi != null) {
                 _state.value = BookDetailState(
@@ -61,6 +75,7 @@ class BookDetailViewModel(
         }
     }
 
+    // Добавляет или удаляет текущую книгу из избранного
     fun toggleFavorite() {
         val currentBook = _state.value.book ?: return
         viewModelScope.launch {
@@ -77,6 +92,7 @@ class BookDetailViewModel(
                     )
                 )
             }
+            // Обновляем локальное состояние, чтобы UI сразу отразил изменения
             _state.value = _state.value.copy(isFavorite = !_state.value.isFavorite)
         }
     }

@@ -52,7 +52,7 @@ fun AppNavHost(navController: NavHostController) {
         composable("detail/{bookId}") { backStackEntry ->
             val bookId = backStackEntry.arguments?.getString("bookId") ?: ""
             val detailViewModel: BookDetailViewModel = getViewModel(
-                parameters = { parametersOf(catalogViewModel, favoriteViewModel) }
+                parameters = { parametersOf(catalogViewModel, favoriteViewModel) } //позволяет Detail экрану работать без повторного запроса всех книг
             )
             BookDetailScreen(viewModel = detailViewModel, bookId = bookId)
         }

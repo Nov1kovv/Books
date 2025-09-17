@@ -67,3 +67,5 @@ val appModule = module {
         )
     }
 }
+
+// TODO: Раздели на 2 модуля. Все что для network в network module

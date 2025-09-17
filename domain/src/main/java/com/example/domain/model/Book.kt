@@ -7,3 +7,5 @@ data class Book(
     val description: String?,
     val imageUrl: String?,
 )
+
+// TODO: После переделки авторизации на repository скорее всего добавятся доп сущности, но это не точнол

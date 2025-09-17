@@ -9,6 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 
+
+// TODO:  Перемести в соответствующий пакет
 @Composable
 fun ExaminationScreen(navController: NavController) {
     LaunchedEffect(Unit) {

@@ -10,6 +10,8 @@ import kotlinx.coroutines.launch
 
 class FavoriteViewModel : ViewModel() {
 
+    // TODO: Вся бизнес логика через репозиторий, во вьюмодели должна быть только UI логика
+
     private val firestore = FirebaseFirestore.getInstance()
     private val userId = FirebaseAuth.getInstance().currentUser?.uid ?: "anonymous"
 

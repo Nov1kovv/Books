@@ -8,6 +8,8 @@ data class LoadingState(val status: Status, val message: String? = null) {
         val FAILED = LoadingState(Status.FAILED)
     }
 
+    // TODO: Не используется код выше
+
     enum class Status {
         SUCCESS, FAILED, LOADING, IDLE
     }

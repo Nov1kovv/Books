@@ -20,8 +20,9 @@ class BookRepositoryImpl(
         }
     }
     override suspend fun getBookById(id: String): Book? {
-        return try {
+        return try { // TODO: try catch выносим во view model
             val item = api.getVolume(id)
+            // TODO: Тут должен быть маппинг через DomainMapper. Он будет инжектится в BookRepositoryImpl и ты должен вызывать только его функцию
             Book(
                 id = item.id,
                 title = item.volumeInfo.title,

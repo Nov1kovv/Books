@@ -66,25 +66,6 @@ class BookCatalogViewModel(private val repository: BookRepository) : ViewModel()
         }
     }
 
-//    private fun searchBooks(query: String) = intent {
-//        viewModelScope.launch(ceh) { //запускается корутина с обработкой от ошибок (ceh)
-//            reduce {
-//                state.copy(
-//                    isLoading = true,
-//                    error = null,
-//                    query = query
-//                )
-//            }//Меняет состояние state то, что нужно отобразить на экране
-//            val result = repository.searchBooks(query)
-//            reduce {
-//                state.copy(
-//                    books = result,
-//                    isLoading = false
-//                )
-//            }//Меняет состояние state то, что нужно отобразить на экране
-//        }
-//    }
-
     private fun handleSelectBook(book: Book) =
         intent { //сохраняет выбранную книгу в состояние и навигирует к Detail экрану
             viewModelScope.launch(ceh) { //запускается корутина с обработкой от ошибок (ceh)

@@ -16,3 +16,5 @@ class BooksApp : Application() {
         }
     }
 }
+
+// TODO: Реализовать feature api-impl архитектуру с помощью Игоря в самом конце

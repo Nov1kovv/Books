@@ -40,16 +40,20 @@ fun BookDetailScreen(viewModel: BookDetailViewModel, bookId: String) {
     val book = state.book
     if (book == null) {
         Box(
-            Modifier.fillMaxSize().background(Color(0xFF121212)),
+            Modifier
+                .fillMaxSize()
+                .background(Color(0xFF121212)),
             contentAlignment = Alignment.Center
         ) {
             Text("Книга не найдена", color = Color.White)
+            // TODO: все строки в ресурсы, поищи по кавычкам поиском
         }
         return
     }
 
     Column(
-        Modifier.fillMaxSize()
+        Modifier
+            .fillMaxSize()
             .background(Color(0xFF121212))
             .systemBarsPadding()
             .padding(16.dp)
@@ -60,7 +64,8 @@ fun BookDetailScreen(viewModel: BookDetailViewModel, bookId: String) {
                     model = book.imageUrl,
                     contentDescription = book.title,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.size(160.dp, 220.dp)
+                    modifier = Modifier
+                        .size(160.dp, 220.dp)
                         .clip(RoundedCornerShape(12.dp))
                         .padding(2.dp)
                 )

@@ -23,3 +23,5 @@ data class VolumeInfo(
 data class ImageLinks(
     @SerializedName("thumbnail") val thumbnail: String?
 )
+
+// TODO: Каждая Dto должна быть в своем файле

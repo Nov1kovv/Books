@@ -10,12 +10,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
+
+// TODO: Нельзя инжектить одну вьюмодель в другую
 class BookDetailViewModel(
     private val catalogViewModel: BookCatalogViewModel, // для доступа к списку книг из каталога
     private val favoriteViewModel: FavoriteViewModel, // для работы с избранными книгами
     private val repository: BookRepository // для загрузки книги по id из API
 ) : ViewModel() {
 
+    // TODO: Shared/StateFlow знать на изусть
     private val _state = MutableStateFlow(BookDetailState()) // внутреннее состояние экрана
     val state: StateFlow<BookDetailState> = _state // публичное состояние для UI
 

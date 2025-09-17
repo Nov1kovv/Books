@@ -18,6 +18,12 @@ class RegistrationViewModel : ViewModel(),
         RegistrationState()
     )
 
+    // TODO: UpdateLogin/Password Игорь посмотрит должен ли это быть отденый RegistrationAction.
+    // TODO: Вся авторизация должны работать через соответствующий repository (AuthorizationRepository)
+    // TODO: Можно ли сюда прикрутить токен. Разобраться как это работает
+
+    // TODO: Ыsignup and registration объедлинить в пакет authorization
+
     private val auth: FirebaseAuth =
         FirebaseAuth.getInstance()//экземпляр FirebaseAuth — это объект, который управляет аутентификацией пользователей в Firebase
 

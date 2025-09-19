@@ -1,4 +1,4 @@
-package com.example.books.ui.registration.mvi
+package com.example.books.authorization.registration.mvi
 
 sealed class RegistrationAction {
     data class UpdateLogin(val login: String) : RegistrationAction()

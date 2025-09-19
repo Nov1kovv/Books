@@ -8,15 +8,15 @@ import androidx.navigation.compose.composable
 import com.example.books.ExaminationScreen
 import com.example.books.ui.bottombar.favorite.FavoriteScreen
 import com.example.books.ui.bottombar.favorite.FavoriteViewModel
-import com.example.books.ui.signup.SignUpScreen
-import com.example.books.ui.registration.RegistrationScreen
+import com.example.books.authorization.signup.SignUpScreen
+import com.example.books.authorization.registration.RegistrationScreen
 import com.example.books.ui.catalog.BookCatalogScreen
 import com.example.books.ui.catalog.BookCatalogViewModel
 import com.example.books.ui.bottombar.profile.ProfileScreen
 import com.example.books.ui.bottombar.profile.ProfileViewModel
 import com.example.books.ui.details.BookDetailScreen
 import com.example.books.ui.details.BookDetailViewModel
-import com.example.books.ui.registration.RegistrationViewModel
+import com.example.books.authorization.registration.RegistrationViewModel
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -32,11 +32,11 @@ fun AppNavHost(navController: NavHostController) {
             ExaminationScreen(navController)
         }
         composable("login") {
-            val viewModel = viewModel<RegistrationViewModel>()
+            val viewModel: RegistrationViewModel = getViewModel()
             RegistrationScreen(navController, viewModel)
         }
         composable("signup") {
-            val viewModel = getViewModel<RegistrationViewModel>()
+            val viewModel: RegistrationViewModel = getViewModel()
             SignUpScreen(navController, viewModel)
         }
         composable("catalog") {

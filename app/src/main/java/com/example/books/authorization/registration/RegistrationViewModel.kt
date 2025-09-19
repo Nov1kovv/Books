@@ -1,17 +1,18 @@
-package com.example.books.ui.registration
+package com.example.books.authorization.registration
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.books.ui.registration.mvi.RegistrationAction
-import com.example.books.ui.registration.mvi.RegistrationSideEffect
-import com.example.books.ui.registration.mvi.RegistrationState
+import com.example.books.authorization.registration.mvi.RegistrationAction
+import com.example.books.authorization.registration.mvi.RegistrationSideEffect
+import com.example.books.authorization.registration.mvi.RegistrationState
+import com.example.domain.repository.AuthorizationRepository
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
 
-class RegistrationViewModel : ViewModel(),
+class RegistrationViewModel(private val repository: AuthorizationRepository) : ViewModel(),
     ContainerHost<RegistrationState, RegistrationSideEffect> {
 
     override val container = container<RegistrationState, RegistrationSideEffect>(
@@ -24,8 +25,6 @@ class RegistrationViewModel : ViewModel(),
 
     // TODO: Ыsignup and registration объедлинить в пакет authorization
 
-    private val auth: FirebaseAuth =
-        FirebaseAuth.getInstance()//экземпляр FirebaseAuth — это объект, который управляет аутентификацией пользователей в Firebase
 
     private val ceh = CoroutineExceptionHandler { _, throwable ->
         intent {
@@ -61,19 +60,11 @@ class RegistrationViewModel : ViewModel(),
         reduce { state.copy(isLoading = true, errorMessage = null) }
 
         viewModelScope.launch(ceh) {
-            auth.signInWithEmailAndPassword(state.login, state.password)
-                .addOnCompleteListener { task ->
+            repository.login(state.login, state.password)
                     intent {
                         reduce { state.copy(isLoading = false) }//Меняет состояние state то, что нужно отобразить на экране
-                        if (task.isSuccessful) {
-                            postSideEffect(RegistrationSideEffect.NavigateToCatalog)
-                        } else {
-                            val message = task.exception?.message ?: "Ошибка входа"
-                            reduce { state.copy(errorMessage = message) } //Меняет состояние state то, что нужно отобразить на экране
-                            postSideEffect(RegistrationSideEffect.ShowError(message))
-                        }
+                        postSideEffect(RegistrationSideEffect.NavigateToCatalog)
                     }
-                }
         }
     }
 
@@ -82,20 +73,13 @@ class RegistrationViewModel : ViewModel(),
         reduce { state.copy(isLoading = true, errorMessage = null) }
 
         viewModelScope.launch(ceh) {
-            auth.createUserWithEmailAndPassword(state.login, state.password)
-                .addOnCompleteListener { task ->
-                    intent {
-                        reduce { state.copy(isLoading = false) }
-                        if (task.isSuccessful) {
-                            postSideEffect(RegistrationSideEffect.NavigateToCatalog)
-                        } else {
-                            val message = task.exception?.message ?: "Ошибка регистрации"
-                            reduce { state.copy(errorMessage = message) }
-                            postSideEffect(RegistrationSideEffect.ShowError(message))
-                        }
-                    }
-                }
+            repository.register(state.login, state.password)
+            intent {
+                reduce { state.copy(isLoading = false) }
+                postSideEffect(RegistrationSideEffect.NavigateToCatalog)
+            }
+        }
         }
     }
-}
+
 

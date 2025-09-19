@@ -1,4 +1,4 @@
-package com.example.books.ui.signup
+package com.example.books.authorization.signup
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,9 +28,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.books.ui.registration.RegistrationViewModel
-import com.example.books.ui.registration.mvi.RegistrationAction
-import com.example.books.ui.registration.mvi.RegistrationSideEffect
+import com.example.books.authorization.registration.RegistrationViewModel
+import com.example.books.authorization.registration.mvi.RegistrationAction
+import com.example.books.authorization.registration.mvi.RegistrationSideEffect
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 

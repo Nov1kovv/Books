@@ -12,8 +12,7 @@ import kotlinx.coroutines.launch
 
 
 // TODO: Нельзя инжектить одну вьюмодель в другую
-class BookDetailViewModel(
-    private val catalogViewModel: BookCatalogViewModel, // для доступа к списку книг из каталога
+class BookDetailViewModel( // для доступа к списку книг из каталога
     private val favoriteViewModel: FavoriteViewModel, // для работы с избранными книгами
     private val repository: BookRepository // для загрузки книги по id из API
 ) : ViewModel() {
@@ -35,20 +34,8 @@ class BookDetailViewModel(
     }
 
     // Загружает книгу по bookId
-    // Сначала проверяет каталог потом избранное, потом API
     fun loadBook(bookId: String) {
         viewModelScope.launch {
-            // сначала ищу  в каталоге
-            val fromCatalog = catalogViewModel.getBookById(bookId)
-            if (fromCatalog != null) {
-                _state.value = BookDetailState(
-                    book = fromCatalog,
-                    isFavorite = favoriteViewModel.favorites.value.any { it.id == bookId }
-                )
-                return@launch
-            }
-
-            // если нету в каталоге, то ищу в избранном
             val fromFav = favoriteViewModel.favorites.value.find { it.id == bookId }
             if (fromFav != null) {
                 _state.value = BookDetailState(

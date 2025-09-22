@@ -23,17 +23,20 @@ class BookDetailViewModel( // для доступа к списку книг и�
 ) : ViewModel() {
 
     // TODO: Shared/StateFlow знать на изусть
-    private val _state = MutableStateFlow(BookDetailState()) // внутреннее состояние экрана
-    val state: StateFlow<BookDetailState> = _state // публичное состояние для UI
+    // MutableStateFlow хранит текущее состояние экрана и позволяет наблюдать за ним
+    // Внутренний state используется для изменения данных внутри ViewModel
+    private val _state = MutableStateFlow(BookDetailState())
+    val state: StateFlow<BookDetailState> = _state
 
     init { // Подписка на изменения избранного пользователя
         viewModelScope.launch {
-            favoriteRepository.getFavorites(auth.currentUser?.uid ?: "anonymous")
-                .collect { favs ->
-                    val currentBook = _state.value.book
-                    if (currentBook != null) {
+            favoriteRepository.getFavorites(auth.currentUser?.uid ?: "anonymous") // Получаем поток избранного пользователя
+                .collect { favs -> // collect запускает наблюдение за изменениями
+                    val currentBook = _state.value.book // получаем текущую книгу на экране
+                    if (currentBook != null) { // если книга уже загружена
+                        // Проверяем, есть ли она в списке избранного
                         val isFav = favs.any { it.id == currentBook.id }
-                        _state.value = _state.value.copy(isFavorite = isFav)
+                        _state.value = _state.value.copy(isFavorite = isFav)// Обновляем состояние UI, чтобы сразу отобразить, что книга избранная
                     }
                 }
         }
@@ -42,13 +45,15 @@ class BookDetailViewModel( // для доступа к списку книг и�
     // Загружает книгу по bookId
     fun loadBook(bookId: String) {
         viewModelScope.launch {
-            val userId = auth.currentUser?.uid ?: "anonymous"
+            val userId = auth.currentUser?.uid ?: "anonymous"// Получаем ID пользователя
 
             //Проверяем сначала избранное
             val favs = favoriteRepository.getFavorites(userId).first()
             val fromFav = favs.find { it.id == bookId }
 
             if (fromFav != null) {
+                // если книга есть в избранном
+                // Создаем объект Book на основе данных FavoriteBook
                 _state.value = BookDetailState(
                     book = com.example.domain.model.Book(
                         id = fromFav.id,
@@ -67,9 +72,9 @@ class BookDetailViewModel( // для доступа к списку книг и�
             if (fromApi != null) {
                 _state.value = BookDetailState(
                     book = fromApi,
-                    isFavorite = favs.any { it.id == bookId }
+                    isFavorite = favs.any { it.id == bookId }// проверяем, есть ли она в избранном
                 )
-            } else {
+            } else {// если книга не найдена ни в избранном, ни в API
                 _state.value = BookDetailState(book = null, isFavorite = false)
             }
         }
@@ -80,12 +85,14 @@ class BookDetailViewModel( // для доступа к списку книг и�
     fun toggleFavorite() {
         val currentBook = _state.value.book ?: return
         viewModelScope.launch {
-            if (_state.value.isFavorite) {
+            if (_state.value.isFavorite) {// если книга уже в избранном
+                // Удаляем из избранного через репозиторий
                 favoriteRepository.removeFromFavorites(
                     currentBook.id,
                     auth.currentUser?.uid ?: "anonymous"
                 )
-            } else {
+            } else {// если книги нет в избранном
+                // Добавляем в избранное
                 favoriteRepository.addToFavorites(
                     FavoriteBook(
                         id = currentBook.id,

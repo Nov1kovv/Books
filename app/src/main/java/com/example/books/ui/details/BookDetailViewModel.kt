@@ -8,7 +8,10 @@ import com.example.domain.repository.BookRepository
 import com.example.domain.repository.FavoriteRepository
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 
@@ -39,11 +42,32 @@ class BookDetailViewModel( // для доступа к списку книг и�
     // Загружает книгу по bookId
     fun loadBook(bookId: String) {
         viewModelScope.launch {
+            val userId = auth.currentUser?.uid ?: "anonymous"
+
+            //Проверяем сначала избранное
+            val favs = favoriteRepository.getFavorites(userId).first()
+            val fromFav = favs.find { it.id == bookId }
+
+            if (fromFav != null) {
+                _state.value = BookDetailState(
+                    book = com.example.domain.model.Book(
+                        id = fromFav.id,
+                        title = fromFav.title,
+                        authors = emptyList(),
+                        description = fromFav.description,
+                        imageUrl = fromFav.imageUrl
+                    ),
+                    isFavorite = true
+                )
+                return@launch
+            }
+
+            //Если книги нет в избранном грузим из API
             val fromApi = repository.getBookById(bookId)
             if (fromApi != null) {
                 _state.value = BookDetailState(
                     book = fromApi,
-                    isFavorite = false // актуальное значение подтянется из collect
+                    isFavorite = favs.any { it.id == bookId }
                 )
             } else {
                 _state.value = BookDetailState(book = null, isFavorite = false)
@@ -72,7 +96,6 @@ class BookDetailViewModel( // для доступа к списку книг и�
                     )
                 )
             }
-            _state.value = _state.value.copy(isFavorite = !_state.value.isFavorite)
         }
     }
 }

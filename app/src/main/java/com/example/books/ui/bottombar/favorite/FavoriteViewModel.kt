@@ -20,17 +20,4 @@ class FavoriteViewModel(
     val favorites: StateFlow<List<FavoriteBook>> =
         repository.getFavorites(auth.currentUser?.uid ?: "anonymous")
             .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
-
-    fun addToFavorites(book: FavoriteBook) {
-        viewModelScope.launch { repository.addToFavorites(book) }
-    }
-
-    fun removeFromFavorites(bookId: String) {
-        viewModelScope.launch {
-            repository.removeFromFavorites(
-                bookId,
-                auth.currentUser?.uid ?: "anonymous"
-            )
-        }
-    }
 }

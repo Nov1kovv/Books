@@ -1,4 +1,4 @@
-package com.example.books.ui.bottombar.favorite
+package com.example.domain.model
 
 data class FavoriteBook(
     val id: String = "",

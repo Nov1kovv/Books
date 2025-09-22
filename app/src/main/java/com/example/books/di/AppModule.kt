@@ -9,8 +9,11 @@ import com.example.books.ui.catalog.BookCatalogViewModel
 import com.example.books.ui.details.BookDetailViewModel
 import com.example.books.authorization.registration.RegistrationViewModel
 import com.example.data.data.repository.AuthorizationRepositoryImpl
+import com.example.data.data.repository.FavoriteRepositoryImpl
 import com.example.domain.repository.AuthorizationRepository
+import com.example.domain.repository.FavoriteRepository
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -55,6 +58,12 @@ val appModule = module {
     single<AuthorizationRepository> {
         AuthorizationRepositoryImpl(get())
     }
+    single<FavoriteRepository> {
+        FavoriteRepositoryImpl(
+            firestore = FirebaseFirestore.getInstance(),
+            auth = get()
+        )
+    }
 
     viewModel {
         BookCatalogViewModel(repository = get())
@@ -66,12 +75,15 @@ val appModule = module {
         RegistrationViewModel(repository = get())
     }
     viewModel {
-        FavoriteViewModel()
+        FavoriteViewModel(
+            repository = get(),
+            auth = get())
     }
     viewModel {
         BookDetailViewModel(
-            favoriteViewModel = get(),
-            repository = get()
+            repository = get(),
+            favoriteRepository = get(),
+            auth = get()
         )
     }
 }

@@ -34,12 +34,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.example.books.R
 import com.example.books.ui.bottombar.BottomNavigationBar
 import com.example.books.ui.catalog.mvi.BookCatalogAction
 import com.google.accompanist.placeholder.PlaceholderHighlight
@@ -74,7 +76,7 @@ fun BookCatalogScreen(navController: NavController, viewModel: BookCatalogViewMo
                 .background(backgroundColor)
         ) {
             Text(
-                "Каталог книг", color = textPrimary,
+                stringResource(R.string.catalog_title), color = textPrimary,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold, // жирный шрифт
                 modifier = Modifier.fillMaxWidth()
@@ -87,12 +89,12 @@ fun BookCatalogScreen(navController: NavController, viewModel: BookCatalogViewMo
                 onValueChange = { query ->
                     viewModel.dispatch(BookCatalogAction.Search(query))
                 },
-                placeholder = { Text("Введите название книги") },
+                placeholder = { Text(stringResource(R.string.search_placeholder)) },
                 singleLine = true, // одна строка текста
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Search,
-                        contentDescription = "Поиск",
+                        contentDescription = stringResource(R.string.search_icon_desc),
                         tint = textSecondary // менее яркая
                     )
                 },
@@ -161,7 +163,7 @@ fun BookCatalogScreen(navController: NavController, viewModel: BookCatalogViewMo
                             ) // размер шрифта
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
-                                text = book.description ?: "Описание недоступно",
+                                text = book.description ?:stringResource(R.string.description_unavailable),
                                 color = textSecondary,
                                 fontSize = 14.sp,
                                 maxLines = 3
@@ -178,7 +180,7 @@ fun BookCatalogScreen(navController: NavController, viewModel: BookCatalogViewMo
                                 .height(50.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text("Загрузка...", color = Color.White)
+                            Text(stringResource(R.string.loading), color = Color.White)
                         }
                     }
                 }

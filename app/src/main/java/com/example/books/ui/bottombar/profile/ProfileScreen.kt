@@ -17,11 +17,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.books.R
 import com.example.books.ui.bottombar.BottomNavigationBar
 
 @Composable
@@ -44,7 +46,7 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = vi
                 .background(backgroundColor)
         ) {
             Text(
-                text = "Профиль",
+                text = stringResource(R.string.profile_title),
                 color = textPrimary,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
@@ -65,7 +67,7 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = vi
                     .padding(16.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text("Выйти из аккаунта", color = textPrimary, fontSize = 16.sp)
+                Text( stringResource(R.string.logout), color = textPrimary, fontSize = 16.sp)
             }
         }
     }

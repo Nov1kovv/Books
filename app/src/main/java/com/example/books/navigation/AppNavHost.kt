@@ -1,11 +1,10 @@
 package com.example.books.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.books.ExaminationScreen
+import com.example.books.authorization.registration.ExaminationScreen
 import com.example.books.ui.bottombar.favorite.FavoriteScreen
 import com.example.books.ui.bottombar.favorite.FavoriteViewModel
 import com.example.books.authorization.signup.SignUpScreen
@@ -18,7 +17,6 @@ import com.example.books.ui.details.BookDetailScreen
 import com.example.books.ui.details.BookDetailViewModel
 import com.example.books.authorization.registration.RegistrationViewModel
 import org.koin.androidx.compose.getViewModel
-import org.koin.core.parameter.parametersOf
 
 @Composable
 fun AppNavHost(navController: NavHostController) {

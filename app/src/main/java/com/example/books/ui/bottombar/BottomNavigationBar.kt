@@ -11,7 +11,9 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.example.books.R
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
@@ -29,23 +31,23 @@ fun BottomNavigationBar(navController: NavController) {
         NavigationBarItem(
             selected = true,
             onClick = { navController.navigate("catalog") },
-            icon = { Icon(Icons.Default.Home, contentDescription = "Главная") },
-            label = { Text("Главная") },
+            icon = { Icon(Icons.Default.Home, contentDescription = stringResource(R.string.nav_home)) },
+            label = { Text(stringResource(R.string.nav_home)) },
             colors = itemColors
         )
         NavigationBarItem(
             selected = false,
             onClick = { navController.navigate("favorites") },
-            icon = { Icon(Icons.Default.Favorite, contentDescription = "Избранное") },
-            label = { Text("Избранное") },
+            icon = { Icon(Icons.Default.Favorite, contentDescription = stringResource(R.string.nav_favorites)) },
+            label = { Text(stringResource(R.string.nav_favorites)) },
             colors = itemColors
         )
 
         NavigationBarItem(
             selected = false,
             onClick = { navController.navigate("profile") },
-            icon = { Icon(Icons.Default.Person, contentDescription = "Профиль") },
-            label = { Text("Профиль") },
+            icon = { Icon(Icons.Default.Person, contentDescription = stringResource(R.string.nav_profile)) },
+            label = { Text(stringResource(R.string.nav_profile)) },
             colors = itemColors
         )
 

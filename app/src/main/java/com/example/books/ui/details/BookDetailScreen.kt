@@ -24,10 +24,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.books.R
 
 @Composable
 fun BookDetailScreen(viewModel: BookDetailViewModel, bookId: String) {
@@ -45,7 +47,7 @@ fun BookDetailScreen(viewModel: BookDetailViewModel, bookId: String) {
                 .background(Color(0xFF121212)),
             contentAlignment = Alignment.Center
         ) {
-            Text("Книга не найдена", color = Color.White)
+            Text(text = stringResource(R.string.book_not_found), color = Color.White)
             // TODO: все строки в ресурсы, поищи по кавычкам поиском
         }
         return
@@ -75,7 +77,7 @@ fun BookDetailScreen(viewModel: BookDetailViewModel, bookId: String) {
             Column {
                 Text(book.title, color = Color.White)
                 Spacer(Modifier.height(12.dp))
-                Text(book.description ?: "Описание недоступно", color = Color(0xFFCCCCCC))
+                Text(book.description ?: stringResource(R.string.description_unavailable), color = Color(0xFFCCCCCC))
             }
         }
 
@@ -91,7 +93,8 @@ fun BookDetailScreen(viewModel: BookDetailViewModel, bookId: String) {
                     contentColor = Color.White
                 )
                 ) {
-                Text(if (state.isFavorite) "Убрать из избранного" else "Добавить в избранное",
+                Text(if (state.isFavorite) stringResource(R.string.remove_from_favorites)
+                else stringResource(R.string.add_to_favorites),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold)
             }

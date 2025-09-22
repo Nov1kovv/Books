@@ -24,10 +24,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.books.R
 import com.example.books.authorization.registration.RegistrationViewModel
 import com.example.books.authorization.registration.mvi.RegistrationAction
 import com.example.books.authorization.registration.mvi.RegistrationSideEffect
@@ -70,7 +72,7 @@ fun SignUpScreen(navController: NavController, viewModel: RegistrationViewModel)
     ) {
 
         Text(
-            "Регистрация",
+            text = stringResource(R.string.signup_title),
             color = textPrimary,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
@@ -82,7 +84,7 @@ fun SignUpScreen(navController: NavController, viewModel: RegistrationViewModel)
         TextField(
             value = state.login,
             onValueChange = { viewModel.dispatch(RegistrationAction.UpdateLogin(it)) },
-            label = { Text("Логин", color = textSecondary) },
+            label = { Text(stringResource(R.string.signup_login), color = textSecondary) },
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = cardColor,
                 unfocusedContainerColor = cardColor,
@@ -101,7 +103,7 @@ fun SignUpScreen(navController: NavController, viewModel: RegistrationViewModel)
         TextField(
             value = state.password,
             onValueChange = { viewModel.dispatch(RegistrationAction.UpdatePassword(it)) },
-            label = { Text("Пароль", color = textSecondary) },
+            label = { Text(stringResource(R.string.signup_password), color = textSecondary) },
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = cardColor,
                 unfocusedContainerColor = cardColor,
@@ -127,7 +129,7 @@ fun SignUpScreen(navController: NavController, viewModel: RegistrationViewModel)
             shape = RoundedCornerShape(12.dp),
             enabled = !state.isLoading
         ) {
-            Text(if (state.isLoading) "Загрузка..." else "Зарегистрироваться")
+            Text(if (state.isLoading) stringResource(R.string.signup_loading) else stringResource(R.string.signup_register))
         }
 
         state.errorMessage?.let {
@@ -142,10 +144,10 @@ fun SignUpScreen(navController: NavController, viewModel: RegistrationViewModel)
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            Text(text = "Уже есть аккаунт?", color = textSecondary)
+            Text(text = stringResource(R.string.signup_have_account), color = textSecondary)
             Spacer(modifier = Modifier.width(6.dp))
             Text(
-                text = "Войти",
+                text = stringResource(R.string.signup_login_action),
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.clickable {

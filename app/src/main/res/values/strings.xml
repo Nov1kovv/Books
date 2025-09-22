@@ -1,3 +1,30 @@
 <resources>
     <string name="app_name">Books</string>
+    <string name="book_not_found">Книга не найдена</string>
+    <string name="description_unavailable">Описание недоступно</string>
+    <string name="add_to_favorites">Добавить в избранное</string>
+    <string name="remove_from_favorites">Убрать из избранного</string>
+
+    <string name="catalog_title">Каталог книг</string>
+    <string name="search_placeholder">Введите название книги</string>
+    <string name="search_icon_desc">Поиск</string>
+    <string name="loading">Загрузка...</string>
+
+    <string name="profile_title">Профиль</string>
+    <string name="logout">Выйти из аккаунта</string>
+
+    <string name="favorites_title">Избранное</string>
+    <string name="no_favorites">Нет избранных книг</string>
+
+    <string name="signup_title">Регистрация</string>
+    <string name="signup_login">Логин</string>
+    <string name="signup_password">Пароль</string>
+    <string name="signup_loading">Загрузка...</string>
+    <string name="signup_register">Зарегистрироваться</string>
+    <string name="signup_have_account">Уже есть аккаунт?</string>
+    <string name="signup_login_action">Войти</string>
+
+    <string name="nav_home">Главная</string>
+    <string name="nav_favorites">Избранное</string>
+    <string name="nav_profile">Профиль</string>
 </resources>

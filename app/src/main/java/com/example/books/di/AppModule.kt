@@ -43,7 +43,7 @@ val appModule = module {
         BookCatalogViewModel(repository = get())
     }
     viewModel {
-        ProfileViewModel()
+        ProfileViewModel(authorizationRepository = get())
     }
     viewModel {
         RegistrationViewModel(repository = get())

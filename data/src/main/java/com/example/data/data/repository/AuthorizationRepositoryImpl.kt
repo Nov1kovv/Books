@@ -17,7 +17,7 @@ class AuthorizationRepositoryImpl(
         auth.createUserWithEmailAndPassword(email, password).await()
     }
 
-    override suspend fun logout() {
+    override suspend fun signOut() {
         auth.signOut()
     }
 

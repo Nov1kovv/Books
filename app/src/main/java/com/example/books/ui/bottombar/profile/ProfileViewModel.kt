@@ -1,15 +1,18 @@
 package com.example.books.ui.bottombar.profile
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.domain.repository.AuthorizationRepository
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.launch
 
-class ProfileViewModel : ViewModel() {
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-
+class ProfileViewModel( private val authorizationRepository: AuthorizationRepository) : ViewModel() {
     // TODO: Вся бизнес логика через репозиторий
 
     fun signOut(onSignedOut: () -> Unit) {
-        auth.signOut()
-        onSignedOut()
+        viewModelScope.launch {
+            authorizationRepository.signOut() // suspend
+            onSignedOut()
+        }
     }
 }

@@ -22,32 +22,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 val appModule = module {
-    
-    single {
-        HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
-    }
-
-    single {
-        OkHttpClient.Builder()
-            .addInterceptor(get<HttpLoggingInterceptor>())
-            .build()
-    }
-    single {
-        Retrofit.Builder()
-            .baseUrl("https://www.googleapis.com/books/v1/")
-            .client(get())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        //логирование запрос inreceptor
-        //если rx java, то будет flow intereptor что-то такое
-        //смотрю запрос,
-    }
-
-    single<GoogleBooksApi> {
-        get<Retrofit>().create(GoogleBooksApi::class.java)
-    }
 
     single<BookRepository> {
         BookRepositoryImpl(api = get())
